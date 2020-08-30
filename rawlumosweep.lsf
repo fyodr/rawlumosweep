@@ -1,0 +1,295 @@
+################################################################################
+# rawlumosweep.lsf
+# by Ted Morin
+#
+# script to run a 
+# bend Radius And Width LUmerical MOde solutions SWEEP
+#
+# the following are recorded in an output csv file:
+#
+# inputs:
+# - design wavelength
+# - target mode number [counted by effective index: 1=highest, etc...]
+# - waveguide material [index data)
+# - cladding material [index data]
+# - substrate material [index data]
+# - radius of curvature [measured from wg center] (i, f, num_steps)
+# - wg height
+# - wg width (i, f, num_steps)
+# - sim height
+# - sim width
+# - mesh fine height
+# - mesh fine width
+#
+# outputs:
+# - mode num
+# - effective index [real and imag]
+# - frequency
+# - loss (dB/cm)
+# - group index [real and imag]
+# - TE polarization fraction
+# - angular propagation constant (1/rad)
+# - angular loss (dB/rad)
+# - effective area (um^2)
+# - mode data [NOT YET IMPLEMENTED] TODO
+################################################################################
+
+clear;
+
+################################################################################
+## output management
+
+output_filename = "rawlumosweep_output.csv";
+output_header = "lambda,target_mode_num,";
+output_header = output_header + "wg_material,cladding_material,substrate_material,";
+output_header = output_header + "bend_radius,wg_width,wg_height,";
+output_header = output_header + "sim_height,sim_width,sim_dy,sim_dx,";
+output_header = output_header + "mesh_fine_width,mesh_fine_height,";
+output_header = output_header + "mesh_fine_dy,mesh_fine_dx,";
+output_header = output_header + "mode_num,num_modes_found,frequency,";
+output_header = output_header + "neff_real,neff_imag,loss(dB/cm),ng_real,ng_imag,";
+output_header = output_header + "TE_pol_frac,effective_area,";
+output_header = output_header + "ang_prop_const(1/rad),ang_loss(dB/rad)";
+format long;
+function write_output(output_fn,output_header,lambda,target_mode_num,wg_material,cladding_material,substrate_material,bend_radius,wg_width,wg_height,sim_height,sim_width,sim_dy,sim_dx,mesh_fine_width,mesh_fine_height,mesh_fine_dy,mesh_fine_dx,mode_num,frequency,neff_real,neff_imag,loss,ng_real,ng_imag,TE_pol_frac,effective_area,ang_prop_const,ang_loss,num_modes_found){
+    output_line = replacestring(output_header,"lambda",num2str(lambda));
+    output_line = replacestring(output_line,"target_mode_num",num2str(target_mode_num));
+    output_line = replacestring(output_line,"wg_material",wg_material);
+    output_line = replacestring(output_line,"cladding_material",cladding_material);
+    output_line = replacestring(output_line,"substrate_material",substrate_material);
+    output_line = replacestring(output_line,"bend_radius",num2str(bend_radius));
+    output_line = replacestring(output_line,"wg_width",num2str(wg_width));
+    output_line = replacestring(output_line,"wg_height",num2str(wg_height));
+    output_line = replacestring(output_line,"sim_height",num2str(sim_height));
+    output_line = replacestring(output_line,"sim_width",num2str(sim_width));
+    output_line = replacestring(output_line,"sim_dy",num2str(sim_dy));
+    output_line = replacestring(output_line,"sim_dx",num2str(sim_dx));
+    output_line = replacestring(output_line,"mesh_fine_width",num2str(mesh_fine_width));
+    output_line = replacestring(output_line,"mesh_fine_height",num2str(mesh_fine_height));
+    output_line = replacestring(output_line,"mesh_fine_dy",num2str(mesh_fine_dy));
+    output_line = replacestring(output_line,"mesh_fine_dx",num2str(mesh_fine_dx));
+    output_line = replacestring(output_line,"mode_num",num2str(mode_num));
+    output_line = replacestring(output_line,"frequency",num2str(frequency));
+    output_line = replacestring(output_line,"neff_real",num2str(neff_real));
+    output_line = replacestring(output_line,"neff_imag",num2str(neff_imag));
+    output_line = replacestring(output_line,"loss(dB/cm)",num2str(loss));
+    output_line = replacestring(output_line,"ng_real",num2str(ng_real));
+    output_line = replacestring(output_line,"ng_imag",num2str(ng_imag));
+    output_line = replacestring(output_line,"TE_pol_frac",num2str(TE_pol_frac));
+    output_line = replacestring(output_line,"effective_area",num2str(effective_area));
+    output_line = replacestring(output_line,"ang_prop_const(1/rad)",num2str(ang_prop_const));
+    output_line = replacestring(output_line,"ang_loss(dB/rad)",num2str(ang_loss));
+    output_line = replacestring(output_line,"num_modes_found",num2str(num_modes_found));
+    write(output_fn, output_line);
+}
+
+################################################################################
+## input parameters
+
+#Do you want to visually check the modes during the sweep 1=yes 0=no
+visually_check_proto = 1;
+visually_check_all   = 0;
+
+all_geometry_length = 20; # does not matter
+
+lambda = 1550e-9; # SI
+target_mode_num = 1; # 1=highest effective index
+
+wg_material = "Si3N4 (Silicon Nitride) - Phillip";
+cladding_material = "SiO2 (Glass) - Palik";
+substrate_material = "SiO2 (Glass) - Palik";
+
+wg_width_i = 0.480e-6; #SI
+wg_width_f = 0.680e-6; #SI
+wg_width_num_steps = 51;
+bend_radius_i = 86e-6; #SI
+bend_radius_f = 94e-6; #SI
+bend_radius_num_steps = 25;
+
+wg_height = 400.0e-9; #SI
+substrate_width = 20e-6; #SI (effectively infinite, not recorded)
+substrate_height = 10e-6; #SI (effectively infinite, not recorded)
+cladding_width = 20e-6; #SI (effectively infinite, not recorded)
+cladding_height = 10e-6; #SI (effectively infinite, not recorded)
+sim_width = 5*wg_width_i; #SI
+sim_height = 3*wg_width_i; #SI
+sim_dx = 20e-9; #SI
+sim_dy = 20e-9; #SI
+mesh_fine_width = wg_width_f + 6*sim_dx; #SI
+mesh_fine_height = wg_height + 6*sim_dy; #SI
+mesh_fine_dx = 10e-9; #SI
+mesh_fine_dy = 10e-9; #SI
+
+################################################################################
+## set up structure
+
+switchtolayout;
+make_structure = 0;
+if (make_structure) {
+    addrect("waveguide");
+    addrect("cladding");
+    addrect("substrate");
+    addfde("FDE");
+    addmesh("mesh");
+}
+# set up waveguide
+select("waveguide");
+set("x",0); set("y",0.5*wg_height); set("z",0);
+set("x span", wg_width_i);
+set("y span", wg_height);
+set("z span", all_geometry_length);
+set("material", wg_material);
+set("mesh order", 1);
+# set up the cladding
+select("cladding");
+set("x",0); set("y",0.5*cladding_height); set("z",0);
+set("x span", cladding_width);
+set("y span", cladding_height);
+set("z span", all_geometry_length);
+set("material", cladding_material);
+#set("mesh order", 2);
+# set up substrate
+select("substrate");
+set("x",0); set("y",-0.5*substrate_height); set("z",0);
+set("x span", substrate_width);
+set("y span", substrate_height);
+set("z span", all_geometry_length);
+set("material", substrate_material);
+#set("mesh order", 2);
+# set up FDE simulation geometry (non-geometry below)
+select("FDE");
+set("x",0); set("y",0.5*wg_height); set("z",0);
+set("x span", sim_width);
+set("y span", sim_height);
+set("dx", sim_dx);
+set("dy", sim_dy);
+# set up mesh constraint
+select("mesh");
+set("x",0); set("y", 0.5*wg_height); set("z",0);
+set("x span", mesh_fine_width);
+set("y span", mesh_fine_height);
+set("z span", all_geometry_length);
+set("dx", mesh_fine_dx);
+set("dy", mesh_fine_dy);
+# set up FDE simulation details
+select("FDE");
+set("wavelength", lambda);
+set("solver type", "2D Z normal");
+set("x min bc", "pml");
+set("x max bc", "pml");
+set("y min bc", "pml");
+set("y max bc", "pml");
+set("bend location", "simulation center");
+set("bend radius", bend_radius_i);
+set("calculate group index", 1);
+set("fit materials with multi-coefficient model", 1);
+set("number of test modes", 5);
+
+################################################################################
+## loop preparation
+
+# input vectors
+wg_widths = linspace(wg_width_i, wg_width_f, wg_width_num_steps);
+bend_radii = linspace(bend_radius_i, bend_radius_f, bend_radius_num_steps);
+
+#Initialize output vectors
+mode_num=matrix(wg_width_num_steps, bend_radius_num_steps);
+neff=matrix(wg_width_num_steps, bend_radius_num_steps);
+frequency=matrix(wg_width_num_steps, bend_radius_num_steps);
+ng=matrix(wg_width_num_steps, bend_radius_num_steps);
+loss=matrix(wg_width_num_steps, bend_radius_num_steps);
+te_pol_frac=matrix(wg_width_num_steps, bend_radius_num_steps);
+mode_eff_area=matrix(wg_width_num_steps, bend_radius_num_steps);
+number_of_modes_found=matrix(wg_width_num_steps, bend_radius_num_steps);
+#mode_field_data=matrix(wg_width_num_steps, bend_radius_num_steps); #TODO
+
+mode_found = 0;
+
+################################################################################
+## loop proper
+
+write(output_filename, output_header);
+for (ii=1:wg_width_num_steps) {
+
+    switchtolayout;
+    select("waveguide");
+    set("x span", wg_widths(ii));
+    
+    for (jj=1:bend_radius_num_steps) {
+        switchtolayout;
+        select("FDE");
+        set("bend radius", bend_radii(jj));
+
+        # run the simulation
+        time_before = now;
+        number_of_modes_found(ii,jj) = findmodes();
+        time_after = now;
+        
+        # log the simulation runtime
+        ?sim_time_min = 0.001*(time_after-time_before)/60;
+        
+        if (number_of_modes_found(ii,jj) == 0) {
+            print("No modes found at ii = "+num2str(ii)+", jj = "+num2str(jj));
+        } else {
+        
+        if (!mode_found) {
+
+            #get the e field profile of the prototype mode
+            target_mode = "mode" + num2str(target_mode_num);
+            copydcard(target_mode,"target_mode_dcard");
+            #neff(ii,jj)=getdata(target_mode,"neff");
+        
+            if (visually_check_proto==1) {
+            E=getresult("FDE::data::mode"+num2str(target_mode_num),"E");
+            visualize(E);
+            }
+        
+            mode_found = 1;
+
+        } else {
+        
+            #find mode with best overlap
+            target_mode = bestoverlap("target_mode_dcard");
+            #cleardcard("target_mode");
+            #copydcard(bestMode,"target_mode_card");
+        
+            if (visually_check_all==1) {
+                E=getresult(target_mode,"E");
+                visualize(E);
+            }
+        
+        } # prototype mode if end
+
+        # record data to matrices
+        mode_num(ii,jj)=str2num(substring(target_mode,5));
+        neff(ii,jj)=getdata(target_mode,"neff");
+        frequency(ii,jj)=getdata(target_mode,"f");
+        ng(ii,jj)=getdata(target_mode,"ng");
+        loss(ii,jj)=getdata(target_mode,"loss");
+        te_pol_frac(ii,jj)=getdata(target_mode,"TE polarization fraction");
+        mode_eff_area(ii,jj)=getdata(target_mode,"mode effective area");
+        
+        # write a good summary of that output!
+        # note: angular propagation and angular loss should be
+        #       output values, but they are just set to zero for now. TODO
+        write_output(output_filename,output_header,lambda,target_mode_num,wg_material,cladding_material,substrate_material,bend_radii(jj),wg_widths(ii),wg_height,sim_height,sim_width,sim_dy,sim_dx,mesh_fine_width,mesh_fine_height,mesh_fine_dy,mesh_fine_dx,mode_num(ii,jj),frequency(ii,jj),real(neff(ii,jj)),imag(neff(ii,jj)),loss(ii,jj),real(ng(ii,jj)),imag(ng(ii,jj)),te_pol_frac(ii,jj),mode_eff_area(ii,jj),0,0,number_of_modes_found(ii,jj));
+        
+        } # error check if end
+    } #inner loop end
+} #outer loop end
+
+################################################################################
+## cleanup
+
+# remove dcard
+cleardcard("target_mode_dcard");
+
+################################################################################
+## immediate plotting/analysis
+
+## plots
+# image plot of effective index
+image(wg_widths, bend_radii, real(neff));
+# image plot of loss
+image(wg_widths, bend_radii, loss);
+
