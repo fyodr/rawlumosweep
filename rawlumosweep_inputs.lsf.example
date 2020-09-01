@@ -19,6 +19,7 @@ all_geometry_length = 20; # does not matter
 
 lambda = 1550e-9; # SI
 target_mode_num = 1; # 1=highest effective index
+number_of_test_modes = 5;
 
 wg_material = "Si3N4 (Silicon Nitride) - Phillip";
 cladding_material = "SiO2 (Glass) - Palik";

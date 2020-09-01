@@ -70,4 +70,4 @@ set("bend location", "simulation center");
 set("bend radius", bend_radius_i);
 set("calculate group index", 1);
 set("fit materials with multi-coefficient model", 1);
-set("number of test modes", 5);
+set("number of test modes", number_of_test_modes);
