@@ -1,0 +1,70 @@
+################################################################################
+# rawlumosweep_output.lsf
+# by Ted Morin
+#
+# set up geometry for rawlumosweep
+#
+# (please keep in mind that all scripts share a namespace in lumerical)
+################################################################################
+
+switchtolayout;
+make_structure = 0;
+if (make_structure) {
+    addrect; set("waveguide");
+    addrect; set("cladding");
+    addrect; set("substrate");
+    addfde;
+    addmesh; set("mesh");
+}
+# set up waveguide
+select("waveguide");
+set("x",0); set("y",0.5*wg_height); set("z",0);
+set("x span", wg_width_i);
+set("y span", wg_height);
+set("z span", all_geometry_length);
+set("material", wg_material);
+set("mesh order", 1);
+# set up the cladding
+select("cladding");
+set("x",0); set("y",0.5*cladding_height); set("z",0);
+set("x span", cladding_width);
+set("y span", cladding_height);
+set("z span", all_geometry_length);
+set("material", cladding_material);
+#set("mesh order", 2);
+# set up substrate
+select("substrate");
+set("x",0); set("y",-0.5*substrate_height); set("z",0);
+set("x span", substrate_width);
+set("y span", substrate_height);
+set("z span", all_geometry_length);
+set("material", substrate_material);
+#set("mesh order", 2);
+# set up FDE simulation geometry (non-geometry below)
+select("FDE");
+set("x",0); set("y",0.5*wg_height); set("z",0);
+set("x span", sim_width);
+set("y span", sim_height);
+set("dx", sim_dx);
+set("dy", sim_dy);
+# set up mesh constraint
+select("mesh");
+set("x",0); set("y", 0.5*wg_height); set("z",0);
+set("x span", mesh_fine_width);
+set("y span", mesh_fine_height);
+set("z span", all_geometry_length);
+set("dx", mesh_fine_dx);
+set("dy", mesh_fine_dy);
+# set up FDE simulation details
+select("FDE");
+set("wavelength", lambda);
+set("solver type", "2D Z normal");
+set("x min bc", "pml");
+set("x max bc", "pml");
+set("y min bc", "pml");
+set("y max bc", "pml");
+set("bend location", "simulation center");
+set("bend radius", bend_radius_i);
+set("calculate group index", 1);
+set("fit materials with multi-coefficient model", 1);
+set("number of test modes", 5);

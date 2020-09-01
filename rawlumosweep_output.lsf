@@ -1,0 +1,51 @@
+################################################################################
+# rawlumosweep_output.lsf
+# by Ted Morin
+#
+# define output_header and the write_output function for rawlumosweep
+#
+# (please keep in mind that all scripts share a namespace in lumerical)
+################################################################################
+
+output_header = "lambda,target_mode_num,";
+output_header = output_header + "wg_material,cladding_material,substrate_material,";
+output_header = output_header + "bend_radius,wg_width,wg_height,";
+output_header = output_header + "sim_height,sim_width,sim_dy,sim_dx,";
+output_header = output_header + "mesh_fine_width,mesh_fine_height,";
+output_header = output_header + "mesh_fine_dy,mesh_fine_dx,";
+output_header = output_header + "mode_num,num_modes_found,frequency,";
+output_header = output_header + "neff_real,neff_imag,loss(dB/cm),ng_real,ng_imag,";
+output_header = output_header + "TE_pol_frac,effective_area,";
+output_header = output_header + "ang_prop_const(1/rad),ang_loss(dB/rad)";
+format long;
+function write_output(output_fn,output_header,lambda,target_mode_num,wg_material,cladding_material,substrate_material,bend_radius,wg_width,wg_height,sim_height,sim_width,sim_dy,sim_dx,mesh_fine_width,mesh_fine_height,mesh_fine_dy,mesh_fine_dx,mode_num,frequency,neff_real,neff_imag,loss,ng_real,ng_imag,TE_pol_frac,effective_area,ang_prop_const,ang_loss,num_modes_found){
+    output_line = replacestring(output_header,"lambda",num2str(lambda));
+    output_line = replacestring(output_line,"target_mode_num",num2str(target_mode_num));
+    output_line = replacestring(output_line,"wg_material",wg_material);
+    output_line = replacestring(output_line,"cladding_material",cladding_material);
+    output_line = replacestring(output_line,"substrate_material",substrate_material);
+    output_line = replacestring(output_line,"bend_radius",num2str(bend_radius));
+    output_line = replacestring(output_line,"wg_width",num2str(wg_width));
+    output_line = replacestring(output_line,"wg_height",num2str(wg_height));
+    output_line = replacestring(output_line,"sim_height",num2str(sim_height));
+    output_line = replacestring(output_line,"sim_width",num2str(sim_width));
+    output_line = replacestring(output_line,"sim_dy",num2str(sim_dy));
+    output_line = replacestring(output_line,"sim_dx",num2str(sim_dx));
+    output_line = replacestring(output_line,"mesh_fine_width",num2str(mesh_fine_width));
+    output_line = replacestring(output_line,"mesh_fine_height",num2str(mesh_fine_height));
+    output_line = replacestring(output_line,"mesh_fine_dy",num2str(mesh_fine_dy));
+    output_line = replacestring(output_line,"mesh_fine_dx",num2str(mesh_fine_dx));
+    output_line = replacestring(output_line,"mode_num",num2str(mode_num));
+    output_line = replacestring(output_line,"frequency",num2str(frequency));
+    output_line = replacestring(output_line,"neff_real",num2str(neff_real));
+    output_line = replacestring(output_line,"neff_imag",num2str(neff_imag));
+    output_line = replacestring(output_line,"loss(dB/cm)",num2str(loss));
+    output_line = replacestring(output_line,"ng_real",num2str(ng_real));
+    output_line = replacestring(output_line,"ng_imag",num2str(ng_imag));
+    output_line = replacestring(output_line,"TE_pol_frac",num2str(TE_pol_frac));
+    output_line = replacestring(output_line,"effective_area",num2str(effective_area));
+    output_line = replacestring(output_line,"ang_prop_const(1/rad)",num2str(ang_prop_const));
+    output_line = replacestring(output_line,"ang_loss(dB/rad)",num2str(ang_loss));
+    output_line = replacestring(output_line,"num_modes_found",num2str(num_modes_found));
+    write(output_fn, output_line);
+}

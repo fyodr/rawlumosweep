@@ -1,0 +1,46 @@
+################################################################################
+# rawlumosweep_inputs.lsf.example
+# by Ted Morin
+#
+# set all input values for lumosweep
+#
+# rawlumosweep_intputs.lsf is not tracked by git because it must be changed for
+# every different run. rawlumosweep_inputs.lsf.example serves as a template.
+#
+# (please keep in mind that all scripts share a namespace in lumerical)
+################################################################################
+output_filename = "rawlumosweep_output.csv";
+
+#Do you want to visually check the modes during the sweep 1=yes 0=no
+visually_check_proto = 1;
+visually_check_all   = 0;
+
+all_geometry_length = 20; # does not matter
+
+lambda = 1550e-9; # SI
+target_mode_num = 1; # 1=highest effective index
+
+wg_material = "Si3N4 (Silicon Nitride) - Phillip";
+cladding_material = "SiO2 (Glass) - Palik";
+substrate_material = "SiO2 (Glass) - Palik";
+
+wg_width_i = 0.480e-6; #SI
+wg_width_f = 0.680e-6; #SI
+wg_width_num_steps = 51;
+bend_radius_i = 86e-6; #SI
+bend_radius_f = 94e-6; #SI
+bend_radius_num_steps = 25;
+
+wg_height = 400.0e-9; #SI
+substrate_width = 20e-6; #SI (effectively infinite, not recorded)
+substrate_height = 10e-6; #SI (effectively infinite, not recorded)
+cladding_width = 20e-6; #SI (effectively infinite, not recorded)
+cladding_height = 10e-6; #SI (effectively infinite, not recorded)
+sim_width = 5*wg_width_i; #SI
+sim_height = 3*wg_width_i; #SI
+sim_dx = 20e-9; #SI
+sim_dy = 20e-9; #SI
+mesh_fine_width = wg_width_f + 6*sim_dx; #SI
+mesh_fine_height = wg_height + 6*sim_dy; #SI
+mesh_fine_dx = 10e-9; #SI
+mesh_fine_dy = 10e-9; #SI
