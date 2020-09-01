@@ -126,11 +126,11 @@ mesh_fine_dy = 10e-9; #SI
 switchtolayout;
 make_structure = 0;
 if (make_structure) {
-    addrect("waveguide");
-    addrect("cladding");
-    addrect("substrate");
-    addfde("FDE");
-    addmesh("mesh");
+    addrect; set("waveguide");
+    addrect; set("cladding");
+    addrect; set("substrate");
+    addfde;
+    addmesh; set("mesh");
 }
 # set up waveguide
 select("waveguide");
