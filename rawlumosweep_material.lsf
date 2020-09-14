@@ -21,7 +21,7 @@ function material_from_file(material_name, number_of_columns) {
     new_material = addmaterial("Sampled data");
     setmaterial(new_material, "name", material_name);
     # set the material data from the appropriate file
-    data = readdata(material_name + ".txt");
+    data = readdata(material_name + "_2d.txt"); # _2d signifies 2d data
     data(:,1) = 1e9*c/data(:,1); # lambda (nm) to frequency (Hz)
     data(:,2) = data(:,2)*data(:,2); # n to eps
     setmaterial(material_name, "sampled data", data);
