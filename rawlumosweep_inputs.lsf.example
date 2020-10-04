@@ -9,7 +9,7 @@
 #
 # (please keep in mind that all scripts share a namespace in lumerical)
 ################################################################################
-output_filename = "rawlumosweep_output.csv";
+output_filename = "rawlumosweep_output0200928a.csv";
 
 #Do you want to visually check the modes during the sweep 1=yes 0=no
 visually_check_proto = 1;
@@ -17,7 +17,9 @@ visually_check_all   = 0;
 
 all_geometry_length = 20; # does not matter
 
-lambda = 1550e-9; # SI
+##########################################
+#lambda = 1550e-9; # SI #now sweepable!
+##########################################
 target_mode_num = 1; # 1=highest effective index
 number_of_test_modes = 5;
 
@@ -25,23 +27,61 @@ wg_material = "Si3N4 (Silicon Nitride) - Phillip";
 cladding_material = "SiO2 (Glass) - Palik";
 substrate_material = "SiO2 (Glass) - Palik";
 
-wg_width_i = 0.480e-6; #SI
-wg_width_f = 0.680e-6; #SI
-wg_width_num_steps = 51;
-bend_radius_i = 86e-6; #SI
-bend_radius_f = 94e-6; #SI
-bend_radius_num_steps = 25;
-
-wg_height = 400.0e-9; #SI
+##########################################
+#wg_height = 400.0e-9; #SI # now sweepable!
+##########################################
 substrate_width = 20e-6; #SI (effectively infinite, not recorded)
 substrate_height = 10e-6; #SI (effectively infinite, not recorded)
 cladding_width = 20e-6; #SI (effectively infinite, not recorded)
 cladding_height = 10e-6; #SI (effectively infinite, not recorded)
-sim_width = 5*wg_width_i; #SI
-sim_height = 3*wg_width_i; #SI
+sim_width = 3e-6;  # 5*wg_width_i; #SI
+sim_height = 2e-6;  # 3*wg_width_i; #SI
 sim_dx = 20e-9; #SI
 sim_dy = 20e-9; #SI
-mesh_fine_width = wg_width_f + 6*sim_dx; #SI
-mesh_fine_height = wg_height + 6*sim_dy; #SI
+mesh_fine_width = 1e-6; #wg_width_f + 6*sim_dx; #SI
+mesh_fine_height = 1e-6; # wg_height + 6*sim_dy; #SI
 mesh_fine_dx = 10e-9; #SI
 mesh_fine_dy = 10e-9; #SI
+
+################################################################################
+## Sweepable Parameters
+
+lambda_i = 1540e-9;
+lambda_f = 1560e-9;
+lambda_num_steps = 3;
+wg_width_i = 0.400e-6; #SI # always check simulation dimensions before running!
+wg_width_f = 0.600e-6; #SI
+wg_width_num_steps = 9;
+bend_radius_i = 5e-6; #SI
+bend_radius_f = 95e-6; #SI
+bend_radius_num_steps = 10;
+wg_height_i = 0.100e-6;
+wg_height_f = 0.400e-6;
+wg_height_num_steps = 7;
+
+################################################################################
+## Convert Sweepable Parameters to list
+# convert in inputs for easier customization
+
+# convert to input vectors
+lambdas_ = linspace(lambda_i, lambda_f, lambda_num_steps);
+wg_widths_ = linspace(wg_width_i, wg_width_f, wg_width_num_steps);
+bend_radii_ = linspace(bend_radius_i, bend_radius_f, bend_radius_num_steps);
+wg_heights_ = linspace(wg_height_i, wg_height_f, wg_height_num_steps);
+
+# meshgrid
+lambdas = meshgrid4d(1,lambdas_, wg_widths_, bend_radii_, wg_heights_);
+wg_widths = meshgrid4d(2,lambdas_, wg_widths_, bend_radii_, wg_heights_);
+bend_radii = meshgrid4d(3,lambdas_, wg_widths_, bend_radii_, wg_heights_);
+wg_heights = meshgrid4d(4,lambdas_, wg_widths_, bend_radii_, wg_heights_);
+
+# flatten (not necessary?)
+num_steps_array = size(lambdas);
+total_num_steps = num_steps_array(1)*num_steps_array(2)*num_steps_array(3)*num_steps_array(4);
+#lambdas = reshape(lambdas);
+#wg_widths = reshape(wg_widths);
+#bend_radii = reshape(bend_radii);
+#wg_heights = reshape(wg_heights);
+
+
+
