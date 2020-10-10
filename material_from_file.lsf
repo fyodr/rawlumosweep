@@ -1,5 +1,5 @@
 ################################################################################
-# rawlumosweep_material.lsf.example
+# material_from_file.lsf
 # by Ted Morin
 #
 # define the material_from_file function to streamline adding a new material

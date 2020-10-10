@@ -38,7 +38,7 @@ clear;
 # define inputs
 rawlumosweep_inputs;
 # define the material_from_file function
-rawlumosweep_material;
+material_from_file;
 # set up model geometry
 rawlumosweep_setup;
 # define output_header and the write_output function
