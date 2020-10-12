@@ -37,7 +37,7 @@
 clear;
 # define inputs
 rawlumosweep_inputs;
-# define the material_from_file function
+# define the get_material_from_file function
 material_from_file;
 # set up model geometry
 rawlumosweep_setup;
@@ -46,17 +46,6 @@ rawlumosweep_output;
 
 ################################################################################
 ## sweep preparation
-
-#Initialize output matrices
-mode_num=matrix(wg_width_num_steps, bend_radius_num_steps);
-neff=matrix(wg_width_num_steps, bend_radius_num_steps);
-frequency=matrix(wg_width_num_steps, bend_radius_num_steps);
-ng=matrix(wg_width_num_steps, bend_radius_num_steps);
-loss=matrix(wg_width_num_steps, bend_radius_num_steps);
-te_pol_frac=matrix(wg_width_num_steps, bend_radius_num_steps);
-mode_eff_area=matrix(wg_width_num_steps, bend_radius_num_steps);
-number_of_modes_found=matrix(wg_width_num_steps, bend_radius_num_steps);
-#mode_field_data=matrix(wg_width_num_steps, bend_radius_num_steps); #TODO
 
 mode_found = 0;
 
@@ -158,7 +147,7 @@ cleardcard("target_mode_dcard");
 
 ## plots
 # image plot of effective index
-image(wg_widths, bend_radii, real(neff));
+#image(wg_widths, bend_radii, real(neff));
 # image plot of loss
-image(wg_widths, bend_radii, loss);
+#image(wg_widths, bend_radii, loss);
 

@@ -19,13 +19,13 @@ if (make_structure) {
     addmesh; set("name", "mesh");
 }
 if (materialexists(wg_material) == 0) {
-    material_from_file(wg_material, 2);
+    get_material_from_file(wg_material, 2);
 }
 if (materialexists(cladding_material) == 0) {
-    material_from_file(cladding_material, 2);
+    get_material_from_file(cladding_material, 2);
 }
 if (materialexists(substrate_material) == 0) {
-    material_from_file(substrate_material, 2);
+    get_material_from_file(substrate_material, 2);
 }
 # set up waveguide
 select("waveguide");

@@ -2,7 +2,7 @@
 # material_from_file.lsf
 # by Ted Morin
 #
-# define the material_from_file function to streamline adding a new material
+# define the get_material_from_file function to streamline adding a new material
 # from a tab separated .txt file (just like you would use in the gui)
 #
 # function inputs:
@@ -16,7 +16,7 @@
 # (please keep in mind that all scripts share a namespace in lumerical)
 ################################################################################
 
-function material_from_file(material_name, number_of_columns) {
+function get_material_from_file( material_name, number_of_columns) {
     # check if the material is already in the database, add it if not
     new_material = addmaterial("Sampled data");
     setmaterial(new_material, "name", material_name);
