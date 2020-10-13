@@ -1,0 +1,66 @@
+################################################################################
+# rawlumosweep_update.lsf
+# by Ted Morin
+#
+# run a simulation for rawlumosweep
+#
+# (please keep in mind that all scripts share a namespace in lumerical)
+################################################################################
+
+outp = struct;
+
+# run the simulation
+time_before = now;
+outp.num_modes_found = findmodes();
+time_after = now;
+
+# log the simulation runtime
+sim_time_min = 0.001*(time_after-time_before)/60;
+
+if (outp.num_modes_found == 0) {
+    print("No modes found at ii = "+num2str(ii));
+} else {
+
+    if (!mode_found) {
+
+        #get the e field profile of the prototype mode
+        target_mode = "mode" + num2str(inp.target_mode_num);
+        copydcard(target_mode,"target_mode_dcard");
+
+        mode_found = 1;
+
+    } else {
+
+        #find mode with best overlap
+        target_mode = bestoverlap("target_mode_dcard");
+        #cleardcard("target_mode");
+        #copydcard(bestMode,"target_mode_card");i
+
+    } # prototype mode if end
+
+    if (inp.visually_check==1) {
+        E=getresult(target_mode,"E");
+        visualize(E);
+    }
+
+    # recover output from simulation
+    outp.mode_num=str2num(substring(target_mode,5));
+    outp.neff=getdata(target_mode,"neff");
+    outp.frequency=getdata(target_mode,"f");
+    outp.ng=getdata(target_mode,"ng");
+    outp.loss=getdata(target_mode,"loss");
+    outp.te_pol_frac=getdata(target_mode,"TE polarization fraction");
+    outp.effective_area=getdata(target_mode,"mode effective area");
+
+    # compute calculated outputs
+    outp.neff_ang = outp.neff * inp.bend_radius;
+
+    # get index data on materials
+    outp.n_waveguide=getindex(inp.wg_material, outp.frequency);
+    outp.n_cladding=getindex(inp.cladding_material, outp.frequency);
+    outp.n_substrate=getindex(inp.substrate_material, outp.frequency);
+
+    # write a good summary of the output
+    write_output(output_filename,output_header,inp,outp);
+} # error check if end
+

@@ -8,30 +8,10 @@
 # the following are recorded in an output csv file:
 #
 # inputs:
-# - design wavelength
-# - target mode number [counted by effective index: 1=highest, etc...]
-# - waveguide material [index data)
-# - cladding material [index data]
-# - substrate material [index data]
-# - radius of curvature [measured from wg center] (i, f, num_steps)
-# - wg height
-# - wg width (i, f, num_steps)
-# - sim height
-# - sim width
-# - mesh fine height
-# - mesh fine width
+# - see rawlumosweep_outputs.lsf.example
 #
 # outputs:
-# - mode num
-# - effective index [real and imag]
-# - frequency
-# - loss (dB/cm)
-# - group index [real and imag]
-# - TE polarization fraction
-# - angular propagation constant (1/rad)
-# - angular loss (dB/rad)
-# - effective area (um^2)
-# - mode data [NOT YET IMPLEMENTED] TODO
+# - see rawlumosweep_outputs.lsf
 ################################################################################
 
 clear;
@@ -60,80 +40,16 @@ write(output_filename, output_header);
 for (ii=1:total_num_steps) {
 
     # set the variables for this iteration
-    lambda = lambdas(ii);
-    wg_width = wg_widths(ii);
-    bend_radius = bend_radii(ii);
-    wg_height = wg_heights(ii);
+    inp.lambda = lambdas(ii);
+    inp.wg_width = wg_widths(ii);
+    inp.bend_radius = bend_radii(ii);
+    inp.wg_height = wg_heights(ii);
 
-    switchtolayout;
-    select("waveguide");
-    set("x span", wg_width);
-    set("y span", wg_height);
-    set("y", 0.5*wg_height);
-
-    select("FDE");
-    set("bend radius", bend_radius);
-    set("wavelength", lambda);
-    set("y", 0.5*wg_height);
-
-    select("mesh");
-    set("y", 0.5*wg_height);
+    rawlumosweep_update;
 
     # run the simulation
-    time_before = now;
-    number_of_modes_found = findmodes();
-    time_after = now;
-    
-    # log the simulation runtime
-    sim_time_min = 0.001*(time_after-time_before)/60;
-    
-    if (number_of_modes_found == 0) {
-        print("No modes found at ii = "+num2str(ii));
-    } else {
-    
-    if (!mode_found) {
+    rawlumosweep_run;
 
-        #get the e field profile of the prototype mode
-        target_mode = "mode" + num2str(target_mode_num);
-        copydcard(target_mode,"target_mode_dcard");
-        #neff=getdata(target_mode,"neff");
-    
-        if (visually_check_proto==1) {
-        E=getresult("FDE::data::mode"+num2str(target_mode_num),"E");
-        visualize(E);
-        }
-    
-        mode_found = 1;
-
-    } else {
-    
-        #find mode with best overlap
-        target_mode = bestoverlap("target_mode_dcard");
-        #cleardcard("target_mode");
-        #copydcard(bestMode,"target_mode_card");
-    
-        if (visually_check_all==1) {
-            E=getresult(target_mode,"E");
-            visualize(E);
-        }
-    
-    } # prototype mode if end
-
-    # record data to matrices
-    mode_num=str2num(substring(target_mode,5));
-    neff=getdata(target_mode,"neff");
-    frequency=getdata(target_mode,"f");
-    ng=getdata(target_mode,"ng");
-    loss=getdata(target_mode,"loss");
-    te_pol_frac=getdata(target_mode,"TE polarization fraction");
-    mode_eff_area=getdata(target_mode,"mode effective area");
-    
-    # write a good summary of that output!
-    # note: angular propagation and angular loss should be
-    #       output values, but they are just set to zero for now. TODO
-    write_output(output_filename,output_header,lambda,target_mode_num,wg_material,cladding_material,substrate_material,bend_radius,wg_width,wg_height,sim_height,sim_width,sim_dy,sim_dx,mesh_fine_width,mesh_fine_height,mesh_fine_dy,mesh_fine_dx,mode_num,frequency,real(neff),imag(neff),loss,real(ng),imag(ng),te_pol_frac,mode_eff_area,0,0,number_of_modes_found);
-    
-    } # error check if end
 } # loop end
 
 ################################################################################
@@ -145,9 +61,5 @@ cleardcard("target_mode_dcard");
 ################################################################################
 ## immediate plotting/analysis
 
-## plots
-# image plot of effective index
-#image(wg_widths, bend_radii, real(neff));
-# image plot of loss
-#image(wg_widths, bend_radii, loss);
+# NONE CURRENTLY IMPLEMENTED
 

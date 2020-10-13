@@ -1,0 +1,24 @@
+################################################################################
+# rawlumosweep_update.lsf
+# by Ted Morin
+#
+# update geometry for rawlumosweep
+#
+# (please keep in mind that all scripts share a namespace in lumerical)
+################################################################################
+
+switchtolayout;
+
+select("waveguide");
+set("x span", inp.wg_width);
+set("y span", inp.wg_height);
+set("y", 0.5*inp.wg_height);
+
+select("FDE");
+set("bend radius", inp.bend_radius);
+set("wavelength", inp.lambda);
+set("y", 0.5*inp.wg_height);
+
+select("mesh");
+set("y", 0.5*inp.wg_height);
+

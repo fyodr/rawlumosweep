@@ -6,46 +6,71 @@
 #
 # (please keep in mind that all scripts share a namespace in lumerical)
 ################################################################################
+format long;
 
 output_header = "lambda,target_mode_num,";
-output_header = output_header + "wg_material,cladding_material,substrate_material,";
-output_header = output_header + "bend_radius,wg_width,wg_height,";
+output_header = output_header + "wg_material,";
+output_header = output_header + "n_waveguide_real,n_waveguide_imag,";
+output_header = output_header + "cladding_material,";
+output_header = output_header + "n_cladding_real,n_cladding_imag,";
+output_header = output_header + "substrate_material,";
+output_header = output_header + "n_substrate_real,n_substrate_imag,";
+output_header = output_header + "wg_width,wg_height,etch_depth,";
+output_header = output_header + "bend_radius,curvature,";
 output_header = output_header + "sim_height,sim_width,sim_dy,sim_dx,";
 output_header = output_header + "mesh_fine_width,mesh_fine_height,";
 output_header = output_header + "mesh_fine_dy,mesh_fine_dx,";
 output_header = output_header + "mode_num,num_modes_found,frequency,";
-output_header = output_header + "neff_real,neff_imag,loss(dB/cm),ng_real,ng_imag,";
-output_header = output_header + "TE_pol_frac,effective_area,";
-output_header = output_header + "ang_prop_const(1/rad),ang_loss(dB/rad)";
-format long;
-function write_output(output_fn,output_header,lambda,target_mode_num,wg_material,cladding_material,substrate_material,bend_radius,wg_width,wg_height,sim_height,sim_width,sim_dy,sim_dx,mesh_fine_width,mesh_fine_height,mesh_fine_dy,mesh_fine_dx,mode_num,frequency,neff_real,neff_imag,loss,ng_real,ng_imag,TE_pol_frac,effective_area,ang_prop_const,ang_loss,num_modes_found){
-    output_line = replacestring(output_header,"lambda",num2str(lambda));
-    output_line = replacestring(output_line,"target_mode_num",num2str(target_mode_num));
-    output_line = replacestring(output_line,"wg_material",wg_material);
-    output_line = replacestring(output_line,"cladding_material",cladding_material);
-    output_line = replacestring(output_line,"substrate_material",substrate_material);
-    output_line = replacestring(output_line,"bend_radius",num2str(bend_radius));
-    output_line = replacestring(output_line,"wg_width",num2str(wg_width));
-    output_line = replacestring(output_line,"wg_height",num2str(wg_height));
-    output_line = replacestring(output_line,"sim_height",num2str(sim_height));
-    output_line = replacestring(output_line,"sim_width",num2str(sim_width));
-    output_line = replacestring(output_line,"sim_dy",num2str(sim_dy));
-    output_line = replacestring(output_line,"sim_dx",num2str(sim_dx));
-    output_line = replacestring(output_line,"mesh_fine_width",num2str(mesh_fine_width));
-    output_line = replacestring(output_line,"mesh_fine_height",num2str(mesh_fine_height));
-    output_line = replacestring(output_line,"mesh_fine_dy",num2str(mesh_fine_dy));
-    output_line = replacestring(output_line,"mesh_fine_dx",num2str(mesh_fine_dx));
-    output_line = replacestring(output_line,"mode_num",num2str(mode_num));
-    output_line = replacestring(output_line,"frequency",num2str(frequency));
-    output_line = replacestring(output_line,"neff_real",num2str(neff_real));
-    output_line = replacestring(output_line,"neff_imag",num2str(neff_imag));
-    output_line = replacestring(output_line,"loss(dB/cm)",num2str(loss));
-    output_line = replacestring(output_line,"ng_real",num2str(ng_real));
-    output_line = replacestring(output_line,"ng_imag",num2str(ng_imag));
-    output_line = replacestring(output_line,"TE_pol_frac",num2str(TE_pol_frac));
-    output_line = replacestring(output_line,"effective_area",num2str(effective_area));
-    output_line = replacestring(output_line,"ang_prop_const(1/rad)",num2str(ang_prop_const));
-    output_line = replacestring(output_line,"ang_loss(dB/rad)",num2str(ang_loss));
-    output_line = replacestring(output_line,"num_modes_found",num2str(num_modes_found));
-    write(output_fn, output_line);
+output_header = output_header + "neff_real,neff_imag,loss(dB/cm),";
+output_header = output_header + "neff_ang_real,neff_ang_imag,";
+output_header = output_header + "ng_real,ng_imag,";
+output_header = output_header + "te_pol_frac,effective_area";
+
+function write_output(output_fn,output_header,inp, outp) {
+    # frequency details
+    outtext = replacestring(output_header,"lambda",num2str(inp.lambda));
+    outtext = replacestring(outtext,"target_mode_num",num2str(inp.target_mode_num));
+
+    outtext = replacestring(outtext,"wg_material",inp.wg_material);
+    outtext = replacestring(outtext,"cladding_material",inp.cladding_material);
+    outtext = replacestring(outtext,"substrate_material",inp.substrate_material);
+    outtext = replacestring(outtext,"n_waveguide_real",num2str(real(outp.n_waveguide)));
+    outtext = replacestring(outtext,"n_waveguide_imag",num2str(imag(outp.n_waveguide)));
+    outtext = replacestring(outtext,"n_cladding_real",num2str(real(outp.n_cladding)));
+    outtext = replacestring(outtext,"n_cladding_imag",num2str(imag(outp.n_cladding)));
+    outtext = replacestring(outtext,"n_substrate_real",num2str(real(outp.n_substrate)));
+    outtext = replacestring(outtext,"n_substrate_imag",num2str(imag(outp.n_substrate)));
+
+    # geometry details
+    outtext = replacestring(outtext,"wg_width",num2str(inp.wg_width));
+    outtext = replacestring(outtext,"wg_height",num2str(inp.wg_height));
+    outtext = replacestring(outtext,"bend_radius",num2str(inp.bend_radius));
+    outtext = replacestring(outtext,"curvature",num2str(1.0/inp.bend_radius));
+    outtext = replacestring(outtext,"etch_depth",num2str(inp.etch_depth));
+
+    # simulation details
+    outtext = replacestring(outtext,"sim_height",num2str(inp.sim_height));
+    outtext = replacestring(outtext,"sim_width",num2str(inp.sim_width));
+    outtext = replacestring(outtext,"sim_dy",num2str(inp.sim_dy));
+    outtext = replacestring(outtext,"sim_dx",num2str(inp.sim_dx));
+    outtext = replacestring(outtext,"mesh_fine_width",num2str(inp.mesh_fine_width));
+    outtext = replacestring(outtext,"mesh_fine_height",num2str(inp.mesh_fine_height));
+    outtext = replacestring(outtext,"mesh_fine_dy",num2str(inp.mesh_fine_dy));
+    outtext = replacestring(outtext,"mesh_fine_dx",num2str(inp.mesh_fine_dx));
+
+    outtext = replacestring(outtext,"mode_num",num2str(outp.mode_num));
+    outtext = replacestring(outtext,"frequency",num2str(outp.frequency));
+    outtext = replacestring(outtext,"loss(dB/cm)",num2str(outp.loss));
+
+    outtext = replacestring(outtext,"neff_real",num2str(real(outp.neff)));
+    outtext = replacestring(outtext,"neff_imag",num2str(imag(outp.neff)));
+    outtext = replacestring(outtext,"ng_real",num2str(real(outp.ng)));
+    outtext = replacestring(outtext,"ng_imag",num2str(imag(outp.ng)));
+
+    outtext = replacestring(outtext,"te_pol_frac",num2str(outp.te_pol_frac));
+    outtext = replacestring(outtext,"effective_area",num2str(outp.effective_area));
+    #outtext = replacestring(outtext,"neff_ang_real",num2str(real(outp.neff_ang)));
+    #outtext = replacestring(outtext,"neff_ang_real",num2str(imag(outp.neff_ang)));
+    outtext = replacestring(outtext,"num_modes_found",num2str(outp.num_modes_found));
+    write(output_fn, outtext);
 }

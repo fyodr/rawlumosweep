@@ -4,60 +4,64 @@
 #
 # set all input values for lumosweep
 #
+# details of inputs - TODO
+#
 # rawlumosweep_intputs.lsf is not tracked by git because it must be changed for
 # every different run. rawlumosweep_inputs.lsf.example serves as a template.
 #
 # (please keep in mind that all scripts share a namespace in lumerical)
 ################################################################################
-output_filename = "rawlumosweep_output0200928a.csv";
+output_filename = "rawlumosweep_example_output.csv";
+
+inp = struct;
 
 #Do you want to visually check the modes during the sweep 1=yes 0=no
-visually_check_proto = 1;
-visually_check_all   = 0;
+inp.visually_check = 1;
 
-all_geometry_length = 20; # does not matter
-
-##########################################
-#lambda = 1550e-9; # SI #now sweepable!
-##########################################
-target_mode_num = 1; # 1=highest effective index
-number_of_test_modes = 5;
-
-wg_material = "Si3N4 (Silicon Nitride) - Phillip";
-cladding_material = "SiO2 (Glass) - Palik";
-substrate_material = "SiO2 (Glass) - Palik";
+inp.all_geometry_length = 20; # does not matter
 
 ##########################################
-#wg_height = 400.0e-9; #SI # now sweepable!
+#lambda = 1550e-9; # SI #set in sweep
 ##########################################
-substrate_width = 20e-6; #SI (effectively infinite, not recorded)
-substrate_height = 10e-6; #SI (effectively infinite, not recorded)
-cladding_width = 20e-6; #SI (effectively infinite, not recorded)
-cladding_height = 10e-6; #SI (effectively infinite, not recorded)
-sim_width = 3e-6;  # 5*wg_width_i; #SI
-sim_height = 2e-6;  # 3*wg_width_i; #SI
-sim_dx = 20e-9; #SI
-sim_dy = 20e-9; #SI
-mesh_fine_width = 1e-6; #wg_width_f + 6*sim_dx; #SI
-mesh_fine_height = 1e-6; # wg_height + 6*sim_dy; #SI
-mesh_fine_dx = 10e-9; #SI
-mesh_fine_dy = 10e-9; #SI
+inp.target_mode_num = 1; # 1=highest effective index
+inp.number_of_test_modes = 5;
+
+inp.wg_material = "Si3N4 (Silicon Nitride) - Kischkat";
+inp.cladding_material = "SiO2 (Glass) - Palik";
+inp.substrate_material = "SiO2 (Glass) - Palik";
+
+inp.etch_depth = 0.0e-6; # wg_height + 6*sim_dy; #SI
+##########################################
+#wg_height = 80.0e-9; #SI # now sweepable!
+##########################################
+inp.sim_width = 3e-6;  # 5*wg_width_i; #SI
+inp.sim_height = 2e-6;  # 3*wg_width_i; #SI
+inp.substrate_width = inp.sim_width*1.5; #SI (infinite, not recorded)
+inp.substrate_height = inp.sim_height*1.5; #SI (infinite, not recorded)
+inp.cladding_width = inp.sim_width*1.5; #SI (infinite, not recorded)
+inp.cladding_height = inp.sim_height*1.5; #SI (infinite, not recorded)
+inp.sim_dx = 20e-9; #SI
+inp.sim_dy = 20e-9; #SI
+inp.mesh_fine_width = 1.55e-6; #wg_width_f + 6*sim_dx; #SI
+inp.mesh_fine_height = 0.3e-6; # wg_height + 6*sim_dy; #SI
+inp.mesh_fine_dx = 10e-9; #SI
+inp.mesh_fine_dy = 10e-9; #SI
 
 ################################################################################
 ## Sweepable Parameters
 
 lambda_i = 1540e-9;
 lambda_f = 1560e-9;
-lambda_num_steps = 3;
+lambda_num_steps = 2;
 wg_width_i = 0.400e-6; #SI # always check simulation dimensions before running!
-wg_width_f = 0.600e-6; #SI
-wg_width_num_steps = 9;
-bend_radius_i = 5e-6; #SI
-bend_radius_f = 95e-6; #SI
-bend_radius_num_steps = 10;
-wg_height_i = 0.100e-6;
-wg_height_f = 0.400e-6;
-wg_height_num_steps = 7;
+wg_width_f = 1.500e-6; #SI
+wg_width_num_steps = 2;
+bend_radius_i = 200e-6; #SI
+bend_radius_f = 700e-6; #SI
+bend_radius_num_steps = 2;
+wg_height_i = 0.020e-6;
+wg_height_f = 0.180e-6;
+wg_height_num_steps = 2;
 
 ################################################################################
 ## Convert Sweepable Parameters to list

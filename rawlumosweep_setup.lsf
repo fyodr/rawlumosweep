@@ -18,42 +18,42 @@ if (make_structure) {
     addfde;
     addmesh; set("name", "mesh");
 }
-if (materialexists(wg_material) == 0) {
-    get_material_from_file(wg_material, 2);
+if (materialexists(inp.wg_material) == 0) {
+    get_material_from_file(inp.wg_material, 2);
 }
-if (materialexists(cladding_material) == 0) {
-    get_material_from_file(cladding_material, 2);
+if (materialexists(inp.cladding_material) == 0) {
+    get_material_from_file(inp.cladding_material, 2);
 }
-if (materialexists(substrate_material) == 0) {
-    get_material_from_file(substrate_material, 2);
+if (materialexists(inp.substrate_material) == 0) {
+    get_material_from_file(inp.substrate_material, 2);
 }
 # set up waveguide
 select("waveguide");
 set("x",0);
-#set("y",0.5*wg_heights_i); # set in loop
+#set("y",0.5*inp.wg_heights_i); # set in loop
 set("z",0);
-#set("x span", wg_widths_i); # set in loop
-#set("y span", wg_heights_i); # set in loop
-set("z span", all_geometry_length);
-set("material", wg_material);
+#set("x span", inp.wg_widths_i); # set in loop
+#set("y span", inp.wg_heights_i); # set in loop
+set("z span", inp.all_geometry_length);
+set("material", inp.wg_material);
 set("set mesh order from material database", 0);
 set("mesh order", 1);
 # set up the cladding
 select("cladding");
-set("x",0); set("y",0.5*cladding_height); set("z",0);
-set("x span", cladding_width);
-set("y span", cladding_height);
-set("z span", all_geometry_length);
-set("material", cladding_material);
+set("x",0); set("y",0.5*inp.cladding_height); set("z",0);
+set("x span", inp.cladding_width);
+set("y span", inp.cladding_height);
+set("z span", inp.all_geometry_length);
+set("material", inp.cladding_material);
 set("set mesh order from material database", 0);
 set("mesh order", 2);
 # set up substrate
 select("substrate");
-set("x",0); set("y",-0.5*substrate_height); set("z",0);
-set("x span", substrate_width);
-set("y span", substrate_height);
-set("z span", all_geometry_length);
-set("material", substrate_material);
+set("x",0); set("y",-0.5*inp.substrate_height); set("z",0);
+set("x span", inp.substrate_width);
+set("y span", inp.substrate_height);
+set("z span", inp.all_geometry_length);
+set("material", inp.substrate_material);
 set("set mesh order from material database", 0);
 set("mesh order", 2);
 # set up FDE simulation geometry (non-geometry below)
@@ -61,32 +61,32 @@ select("FDE");
 set("x",0);
 #set("y",0); # now set in sweep
 set("z",0);
-set("x span", sim_width);
-set("y span", sim_height);
+set("x span", inp.sim_width);
+set("y span", inp.sim_height);
 set("define x mesh by", "maximum mesh step");
 set("define y mesh by", "maximum mesh step");
-set("dx", sim_dx);
-set("dy", sim_dy);
+set("dx", inp.sim_dx);
+set("dy", inp.sim_dy);
 # set up mesh constraint
 select("mesh");
 set("x",0);
-#set("y", 0.5*wg_height); # now set in sweep
+#set("y", 0.5*inp.wg_height); # now set in sweep
 set("z",0); 
-set("x span", mesh_fine_width);
-set("y span", mesh_fine_height);
-set("z span", all_geometry_length);
-set("dx", mesh_fine_dx);
-set("dy", mesh_fine_dy);
+set("x span", inp.mesh_fine_width);
+set("y span", inp.mesh_fine_height);
+set("z span", inp.all_geometry_length);
+set("dx", inp.mesh_fine_dx);
+set("dy", inp.mesh_fine_dy);
 # set up FDE simulation details
 select("FDE");
-#set("wavelength", lambda); # set in loop
+#set("wavelength", inp.lambda); # set in loop
 set("solver type", "2D Z normal");
 set("x min bc", "pml");
 set("x max bc", "pml");
 set("y min bc", "pml");
 set("y max bc", "pml");
 set("bend location", "simulation center");
-#set("bend radius", bend_radius_i); # set in loop
+#set("bend radius", inp.bend_radius_i); # set in loop
 set("calculate group index", 1);
 set("fit materials with multi-coefficient model", 1);
-set("number of test modes", number_of_test_modes);
+set("number of test modes", inp.number_of_test_modes);
