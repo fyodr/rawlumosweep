@@ -10,9 +10,17 @@
 switchtolayout;
 
 select("waveguide");
-set("x span", inp.wg_width);
-set("y span", inp.wg_height);
-set("y", 0.5*inp.wg_height);
+set("x min",-0.5*inp.wg_width);
+set("x max", 0.5*inp.wg_width);
+set("y max", inp.wg_height);
+
+select("planarguide");
+if (inp.etch_depth < inp.wg_height) {
+    set("mesh order", 4);
+} else {
+    set("mesh level", 1);
+    set("y max", inp.wg_height - inp.etch_depth);
+}
 
 select("FDE");
 set("bend radius", inp.bend_radius);
