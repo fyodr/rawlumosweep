@@ -62,30 +62,52 @@ bend_radius_num_steps = 2;
 wg_height_i = 0.020e-6;
 wg_height_f = 0.180e-6;
 wg_height_num_steps = 2;
+etch_depth_i = 0.200e-6;
+etch_depth_f = 0.200e-6;
+etch_depth_num_steps = 1;
+sidewall_angle_i = 90;
+sidewall_angle_f = 90;
+sidewall_angle_num_steps = 1;
 
 ################################################################################
-## Convert Sweepable Parameters to list
-# convert in inputs for easier customization
+## convert sweepable parameters to vectors
 
-# convert to input vectors
+total_num_steps = 1;
+total_num_steps = total_num_steps * lambda_num_steps;
+total_num_steps = total_num_steps * wg_width_num_steps;
+total_num_steps = total_num_steps * wg_height_num_steps;
+total_num_steps = total_num_steps * bend_radius_num_steps;
+total_num_steps = total_num_steps * etch_depth_num_steps;
+total_num_steps = total_num_steps * sidewall_angle_num_steps;
+
 lambdas_ = linspace(lambda_i, lambda_f, lambda_num_steps);
 wg_widths_ = linspace(wg_width_i, wg_width_f, wg_width_num_steps);
-bend_radii_ = linspace(bend_radius_i, bend_radius_f, bend_radius_num_steps);
 wg_heights_ = linspace(wg_height_i, wg_height_f, wg_height_num_steps);
+bend_radii_ = linspace(bend_radius_i, bend_radius_f, bend_radius_num_steps);
+etch_depths_ = linspace(etch_depth_i, etch_depth_f, etch_depth_num_steps);
+sidewall_angles_ = linspace(sidewall_angle_i, sidewall_angle_f, sidewall_angle_num_steps);
 
-# meshgrid
-lambdas = meshgrid4d(1,lambdas_, wg_widths_, bend_radii_, wg_heights_);
-wg_widths = meshgrid4d(2,lambdas_, wg_widths_, bend_radii_, wg_heights_);
-bend_radii = meshgrid4d(3,lambdas_, wg_widths_, bend_radii_, wg_heights_);
-wg_heights = meshgrid4d(4,lambdas_, wg_widths_, bend_radii_, wg_heights_);
+lambdas = zeros(total_num_steps);
+wg_widths = zeros(total_num_steps);
+wg_heights = zeros(total_num_steps);
+bend_radii = zeros(total_num_steps);
+etch_depths = zeros(total_num_steps);
+sidewall_angles = zeros(total_num_steps);
 
-# flatten (not necessary?)
-num_steps_array = size(lambdas);
-total_num_steps = num_steps_array(1)*num_steps_array(2)*num_steps_array(3)*num_steps_array(4);
-#lambdas = reshape(lambdas);
-#wg_widths = reshape(wg_widths);
-#bend_radii = reshape(bend_radii);
-#wg_heights = reshape(wg_heights);
-
+ix = 0;
+for (i1 = lambdas_) {
+for (i2 = wg_widths_) {
+for (i3 = wg_heights_) {
+for (i4 = bend_radii_) {
+for (i5 = etch_depths_) {
+for (i6 = sidewall_angles_) {
+    ix = ix + 1;
+    lambdas(ix) = i1;
+    wg_widths(ix) = i2;
+    wg_heights(ix) = i3;
+    bend_radii(ix) = i4;
+    etch_depths(ix) = i5;
+    sidewall_angles(ix) = i6;
+}}}}}} # remember to add more braces if you add more sweep parameters
 
 
