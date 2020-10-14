@@ -91,6 +91,7 @@ set("x min bc", "pml");
 set("x max bc", "pml");
 set("y min bc", "pml");
 set("y max bc", "pml");
+set("bent waveguide", 1);
 set("bend location", "simulation center");
 #set("bend radius", inp.bend_radius_i); # set in loop
 set("calculate group index", 1);

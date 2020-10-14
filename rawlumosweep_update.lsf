@@ -23,7 +23,12 @@ if (inp.etch_depth < inp.wg_height) {
 }
 
 select("FDE");
-set("bend radius", inp.bend_radius);
+if (inp.bend_radius == 0) {
+    set("bent waveguide", 0);
+} else {
+    set("bent waveguide", 1);
+    set("bend radius", inp.bend_radius);
+}
 set("wavelength", inp.lambda);
 set("y", 0.5*inp.wg_height);
 
