@@ -44,6 +44,8 @@ for (ii=1:total_num_steps) {
     inp.wg_width = wg_widths(ii);
     inp.bend_radius = bend_radii(ii);
     inp.wg_height = wg_heights(ii);
+    inp.etch_depth = etch_depths(ii);
+    inp.sidewall_angle = sidewall_angles(ii);
 
     rawlumosweep_update;
 
