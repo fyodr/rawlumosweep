@@ -21,9 +21,9 @@ output_header = output_header + "sim_height,sim_width,sim_dy,sim_dx,";
 output_header = output_header + "mesh_fine_width,mesh_fine_height,";
 output_header = output_header + "mesh_fine_dy,mesh_fine_dx,";
 output_header = output_header + "mode_num,num_modes_found,frequency,";
-output_header = output_header + "neff_real,neff_imag,loss(dB/cm),";
+output_header = output_header + "neff_lin_real,neff_lin_imag,loss(dB/cm),";
 output_header = output_header + "neff_ang_real,neff_ang_imag,";
-output_header = output_header + "ng_real,ng_imag,";
+output_header = output_header + "ng_lin_real,ng_lin_imag,";
 output_header = output_header + "te_pol_frac,effective_area";
 
 function write_output(output_fn,output_header,inp, outp) {
@@ -62,15 +62,15 @@ function write_output(output_fn,output_header,inp, outp) {
     outtext = replacestring(outtext,"frequency",num2str(outp.frequency));
     outtext = replacestring(outtext,"loss(dB/cm)",num2str(outp.loss));
 
-    outtext = replacestring(outtext,"neff_real",num2str(real(outp.neff)));
-    outtext = replacestring(outtext,"neff_imag",num2str(imag(outp.neff)));
-    outtext = replacestring(outtext,"ng_real",num2str(real(outp.ng)));
-    outtext = replacestring(outtext,"ng_imag",num2str(imag(outp.ng)));
+    outtext = replacestring(outtext,"neff_lin_real",num2str(real(outp.neff)));
+    outtext = replacestring(outtext,"neff_lin_imag",num2str(imag(outp.neff)));
+    outtext = replacestring(outtext,"ng_lin_real",num2str(real(outp.ng)));
+    outtext = replacestring(outtext,"ng_lin_imag",num2str(imag(outp.ng)));
 
     outtext = replacestring(outtext,"te_pol_frac",num2str(outp.te_pol_frac));
     outtext = replacestring(outtext,"effective_area",num2str(outp.effective_area));
-    #outtext = replacestring(outtext,"neff_ang_real",num2str(real(outp.neff_ang)));
-    #outtext = replacestring(outtext,"neff_ang_real",num2str(imag(outp.neff_ang)));
+    outtext = replacestring(outtext,"neff_ang_real",num2str(real(outp.neff_ang)));
+    outtext = replacestring(outtext,"neff_ang_imag",num2str(imag(outp.neff_ang)));
     outtext = replacestring(outtext,"num_modes_found",num2str(outp.num_modes_found));
     write(output_fn, outtext);
 }

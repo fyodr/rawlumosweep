@@ -16,7 +16,7 @@ output_filename = "rawlumosweep_example_output.csv";
 inp = struct;
 
 #Do you want to visually check the modes during the sweep 1=yes 0=no
-inp.visually_check = 1;
+inp.visually_check = 0;
 
 inp.all_geometry_length = 20; # does not matter
 
@@ -72,20 +72,20 @@ sidewall_angle_num_steps = 1;
 ################################################################################
 ## convert sweepable parameters to vectors
 
-total_num_steps = 1;
-total_num_steps = total_num_steps * lambda_num_steps;
-total_num_steps = total_num_steps * wg_width_num_steps;
-total_num_steps = total_num_steps * wg_height_num_steps;
-total_num_steps = total_num_steps * bend_radius_num_steps;
-total_num_steps = total_num_steps * etch_depth_num_steps;
-total_num_steps = total_num_steps * sidewall_angle_num_steps;
-
 lambdas_ = linspace(lambda_i, lambda_f, lambda_num_steps);
 wg_widths_ = linspace(wg_width_i, wg_width_f, wg_width_num_steps);
 wg_heights_ = linspace(wg_height_i, wg_height_f, wg_height_num_steps);
 bend_radii_ = linspace(bend_radius_i, bend_radius_f, bend_radius_num_steps);
 etch_depths_ = linspace(etch_depth_i, etch_depth_f, etch_depth_num_steps);
 sidewall_angles_ = linspace(sidewall_angle_i, sidewall_angle_f, sidewall_angle_num_steps);
+
+total_num_steps = 1;
+total_num_steps = total_num_steps * length(lambdas_);
+total_num_steps = total_num_steps * length(wg_widths_);
+total_num_steps = total_num_steps * length(wg_heights_);
+total_num_steps = total_num_steps * length(bend_radii_);
+total_num_steps = total_num_steps * length(etch_depths_);
+total_num_steps = total_num_steps * length(sidewall_angles_);
 
 lambdas = zeros(total_num_steps);
 wg_widths = zeros(total_num_steps);

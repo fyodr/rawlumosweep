@@ -15,10 +15,10 @@ set("x max", 0.5*inp.wg_width);
 set("y max", inp.wg_height);
 
 select("planarguide");
-if (inp.etch_depth < inp.wg_height) {
+if (inp.etch_depth > inp.wg_height) {
     set("mesh order", 4);
 } else {
-    set("mesh level", 1);
+    set("mesh order", 1);
     set("y max", inp.wg_height - inp.etch_depth);
 }
 
