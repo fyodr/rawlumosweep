@@ -95,5 +95,5 @@ set("bent waveguide", 1);
 set("bend location", "simulation center");
 #set("bend radius", inp.bend_radius_i); # set in loop
 set("calculate group index", 1);
-set("fit materials with multi-coefficient model", 1);
+set("fit materials with multi-coefficient model", inp.use_index_fits);
 set("number of test modes", inp.number_of_test_modes);

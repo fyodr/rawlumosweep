@@ -11,6 +11,7 @@
 # * output_filename - csv file where output is saved
 # * inp             - geometry input struct (define non-sweep inputs)
 #   * inp.visually_check
+#   * inp.use_index_fits
 #   * inp.number_of_test_modes
 #   * inp.wg_material
 #   * inp.cladding_material
@@ -49,12 +50,15 @@ inp = struct;
 #inp.etch_depth  = 200.0e-9;
 #inp.sidewall_angle = 90; deg
 
-#Do you want to visually check the modes during the sweep 1=yes 0=no
+## 1=yes 0=no
+#Use lumerical multi-coefficient models for material index?
+inp.use_index_fits = 0;
+#Do you want to visually check the modes during the sweep?
 inp.visually_check = 0;
 
 inp.number_of_test_modes = 5;
 
-inp.wg_material = "Si3N4 (Silicon Nitride) - Kischkat";
+inp.wg_material = "Si3N4 (Silicon Nitride) - Phillip";
 inp.cladding_material = "SiO2 (Glass) - Palik";
 inp.substrate_material = "SiO2 (Glass) - Palik";
 
