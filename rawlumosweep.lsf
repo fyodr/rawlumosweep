@@ -8,7 +8,7 @@
 # the following are recorded in an output csv file:
 #
 # inputs:
-# - see rawlumosweep_outputs.lsf.example
+# - see rawlumosweep_inputs.lsf.example
 #
 # outputs:
 # - see rawlumosweep_outputs.lsf

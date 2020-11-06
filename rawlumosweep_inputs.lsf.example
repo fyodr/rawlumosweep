@@ -4,10 +4,36 @@
 #
 # set all input values for lumosweep
 #
-# details of inputs - TODO
-#
 # rawlumosweep_intputs.lsf is not tracked by git because it must be changed for
 # every different run. rawlumosweep_inputs.lsf.example serves as a template.
+#
+# inputs
+# * output_filename - csv file where output is saved
+# * inp             - geometry input struct (define non-sweep inputs)
+#   * inp.visually_check
+#   * inp.number_of_test_modes
+#   * inp.wg_material
+#   * inp.cladding_material
+#   * inp.substrate_material
+#   * inp.sim_width
+#   * inp.sim_height
+#   * inp.substrate_width  (effectively infinite)
+#   * inp.substrate_height (effectively infinite)
+#   * inp.cladding_width   (effectively infinite)
+#   * inp.cladding_height  (effectively infinite)
+#   * inp.sim_dx
+#   * inp.sim_dy
+#   * inp.mesh_fine_width  (should fit largest waveguide structure)
+#   * inp.mesh_fine_height (should fit largest waveguide structure)
+#   * inp.mesh_fine_dx
+#   * inp.mesh_fine_dy
+# * sweep vectors
+#   * lambdas
+#   * bend_radii
+#   * wg_heights
+#   * wg_widths
+#   * etch_depths
+#   * sidewall_angles
 #
 # (please keep in mind that all scripts share a namespace in lumerical)
 ################################################################################
@@ -15,25 +41,23 @@ output_filename = "rawlumosweep_example_output.csv";
 
 inp = struct;
 
+## sweepable inputs
+#lambda          = 1550e-9;
+#inp.bend_radius = 100.0e-6;
+#inp.wg_height   = 600.0e-9;
+#inp.wg_width    = 1200e-9;
+#inp.etch_depth  = 200.0e-9;
+#inp.sidewall_angle = 90; deg
+
 #Do you want to visually check the modes during the sweep 1=yes 0=no
 inp.visually_check = 0;
 
-inp.all_geometry_length = 20; # does not matter
-
-##########################################
-#lambda = 1550e-9; # SI #set in sweep
-##########################################
-inp.target_mode_num = 1; # 1=highest effective index
 inp.number_of_test_modes = 5;
 
 inp.wg_material = "Si3N4 (Silicon Nitride) - Kischkat";
 inp.cladding_material = "SiO2 (Glass) - Palik";
 inp.substrate_material = "SiO2 (Glass) - Palik";
 
-inp.etch_depth = 0.0e-6; # wg_height + 6*sim_dy; #SI
-##########################################
-#wg_height = 80.0e-9; #SI # now sweepable!
-##########################################
 inp.sim_width = 3e-6;  # 5*wg_width_i; #SI
 inp.sim_height = 2e-6;  # 3*wg_width_i; #SI
 inp.substrate_width = inp.sim_width*1.5; #SI (infinite, not recorded)
@@ -48,7 +72,7 @@ inp.mesh_fine_dx = 10e-9; #SI
 inp.mesh_fine_dy = 10e-9; #SI
 
 ################################################################################
-## Sweepable Parameters
+## sweepable parameters
 
 lambda_i = 1540e-9;
 lambda_f = 1560e-9;
@@ -70,7 +94,7 @@ sidewall_angle_f = 90;
 sidewall_angle_num_steps = 1;
 
 ################################################################################
-## convert sweepable parameters to vectors
+## prepare sweep vectors
 
 lambdas_ = linspace(lambda_i, lambda_f, lambda_num_steps);
 wg_widths_ = linspace(wg_width_i, wg_width_f, wg_width_num_steps);

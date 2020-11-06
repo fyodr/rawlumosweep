@@ -2,7 +2,7 @@
 # rawlumosweep_update.lsf
 # by Ted Morin
 #
-# run a simulation for rawlumosweep
+# run a simulation for rawlumosweep and fill outp struct
 #
 # (please keep in mind that all scripts share a namespace in lumerical)
 ################################################################################

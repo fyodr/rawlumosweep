@@ -80,7 +80,7 @@ set("x",0);
 set("z",0); 
 set("x span", inp.mesh_fine_width);
 set("y span", inp.mesh_fine_height);
-set("z span", inp.all_geometry_length);
+set("z span", inp.sim_width);
 set("dx", inp.mesh_fine_dx);
 set("dy", inp.mesh_fine_dy);
 # set up FDE simulation details

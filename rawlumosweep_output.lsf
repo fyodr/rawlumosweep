@@ -4,11 +4,14 @@
 #
 # define output_header and the write_output function for rawlumosweep
 #
+# outputs are more or less self-explanatory - see output_header definition
+# units are SI unless otherwise specified
+#
 # (please keep in mind that all scripts share a namespace in lumerical)
 ################################################################################
 format long;
 
-output_header = "lambda,target_mode_num,";
+output_header = "lambda,";
 output_header = output_header + "wg_material,";
 output_header = output_header + "n_waveguide_real,n_waveguide_imag,";
 output_header = output_header + "cladding_material,";
@@ -27,10 +30,9 @@ output_header = output_header + "ng_lin_real,ng_lin_imag,";
 output_header = output_header + "te_pol_frac,effective_area";
 
 function write_output(output_fn,output_header,inp, outp) {
-    # frequency details
     outtext = replacestring(output_header,"lambda",num2str(inp.lambda));
-    outtext = replacestring(outtext,"target_mode_num",num2str(inp.target_mode_num));
 
+    # material details
     outtext = replacestring(outtext,"wg_material",inp.wg_material);
     outtext = replacestring(outtext,"cladding_material",inp.cladding_material);
     outtext = replacestring(outtext,"substrate_material",inp.substrate_material);
