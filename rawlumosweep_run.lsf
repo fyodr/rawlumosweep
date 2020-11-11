@@ -21,6 +21,8 @@ if (outp.num_modes_found == 0) {
     print("No modes found at ii = "+num2str(ii));
 } else {
 
+    te_mode_jj = 0;
+    tm_mode_jj = 0;
     for (jj=1:outp.num_modes_found) {
 
         outp.mode_num = jj;
@@ -38,6 +40,15 @@ if (outp.num_modes_found == 0) {
         outp.loss=getdata(target_mode,"loss");
         outp.te_pol_frac=getdata(target_mode,"TE polarization fraction");
         outp.effective_area=getdata(target_mode,"mode effective area");
+        if (outp.te_pol_frac > 0.5) {
+            outp.is_te_mode = 1;
+            outp.mode_pol_num = te_mode_jj;
+            te_mode_jj = te_mode_jj + 1;
+        } else {
+            outp.is_te_mode = 0;
+            outp.mode_pol_num = tm_mode_jj;
+            tm_mode_jj = tm_mode_jj + 1;
+        }
 
         # compute calculated outputs
         outp.neff_ang = outp.neff * inp.bend_radius;
