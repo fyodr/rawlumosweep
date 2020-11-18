@@ -16,6 +16,8 @@ if (make_structure) {
     addrect; set("name", "planarguide");
     addrect; set("name", "cladding");
     addrect; set("name", "substrate");
+    addrect; set("name", "post1");
+    addrect; set("name", "post2");
     addfde;
     addmesh; set("name", "mesh");
 }
@@ -32,6 +34,22 @@ if (materialexists(inp.substrate_material) == 0) {
 # set up waveguide
 select("waveguide");
 #set("x min",-0.5*inp.wg_width); set("x max", 0.5*inp.wg_width); # set in loop
+set("y min", 0); #set("y max", inp.wg_height); # set in loop
+set("z min", -inp.sim_width); set("z max",  inp.sim_width);
+set("material", inp.wg_material);
+set("set mesh order from material database", 0);
+set("mesh order", 1);
+# set up post1
+select("post1");
+#set("x min",0.5*inp.wg_width+inp.post_sep); set("x max",0.5*inp.wg_width+inp.post_sep + inp.post_width); # set in loop
+set("y min", 0); #set("y max", inp.wg_height); # set in loop
+set("z min", -inp.sim_width); set("z max",  inp.sim_width);
+set("material", inp.wg_material);
+set("set mesh order from material database", 0);
+set("mesh order", 1);
+# set up post2
+select("post2");
+#set("x max",-0.5*inp.wg_width-inp.post_sep); set("x max",-0.5*inp.wg_width-inp.post_sep - inp.post_width); # set in loop
 set("y min", 0); #set("y max", inp.wg_height); # set in loop
 set("z min", -inp.sim_width); set("z max",  inp.sim_width);
 set("material", inp.wg_material);

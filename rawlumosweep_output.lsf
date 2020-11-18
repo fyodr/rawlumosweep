@@ -20,6 +20,7 @@ output_header = output_header + "substrate_material,";
 output_header = output_header + "n_substrate_real,n_substrate_imag,";
 output_header = output_header + "wg_width,wg_height,etch_depth,";
 output_header = output_header + "bend_radius,curvature,";
+output_header = output_header + "post_sep,post_width,double_post,";
 output_header = output_header + "sim_height,sim_width,sim_dy,sim_dx,";
 output_header = output_header + "mesh_fine_width,mesh_fine_height,";
 output_header = output_header + "mesh_fine_dy,mesh_fine_dx,";
@@ -50,6 +51,9 @@ function write_output(output_fn,output_header,inp, outp) {
     outtext = replacestring(outtext,"bend_radius",num2str(inp.bend_radius));
     outtext = replacestring(outtext,"curvature",num2str(1.0/inp.bend_radius));
     outtext = replacestring(outtext,"etch_depth",num2str(inp.etch_depth));
+    outtext = replacestring(outtext,"post_sep",num2str(inp.post_sep));
+    outtext = replacestring(outtext,"post_width",num2str(inp.post_width));
+    outtext = replacestring(outtext,"double_post",num2str(inp.double_post));
 
     # simulation details
     outtext = replacestring(outtext,"sim_height",num2str(inp.sim_height));

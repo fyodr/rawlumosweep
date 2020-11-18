@@ -14,6 +14,21 @@ set("x min",-0.5*inp.wg_width);
 set("x max", 0.5*inp.wg_width);
 set("y max", inp.wg_height);
 
+select("post1");
+set("x min",0.5*inp.wg_width + inp.post_sep);
+set("x max",0.5*inp.wg_width + inp.post_sep + inp.post_width);
+set("y max", inp.wg_height);
+
+select("post2");
+if (inp.double_post == 1) {
+    set("mesh order", 1);
+    set("x max",-0.5*inp.wg_width - inp.post_sep);
+    set("x min",-0.5*inp.wg_width - inp.post_sep - inp.post_width);
+    set("y max", inp.wg_height);
+} else {
+    set("mesh order", 4);
+}
+
 select("planarguide");
 if (inp.etch_depth > inp.wg_height) {
     set("mesh order", 4);

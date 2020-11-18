@@ -46,6 +46,8 @@ for (ii=1:total_num_steps) {
     inp.wg_height = wg_heights(ii);
     inp.etch_depth = etch_depths(ii);
     inp.sidewall_angle = sidewall_angles(ii);
+    inp.post_sep = post_seps(ii);
+    inp.post_width = post_widths(ii);
 
     # update the simulation geometry
     rawlumosweep_update;

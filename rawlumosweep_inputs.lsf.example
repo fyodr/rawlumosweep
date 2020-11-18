@@ -96,6 +96,12 @@ etch_depth_num_steps = 1;
 sidewall_angle_i = 90;
 sidewall_angle_f = 90;
 sidewall_angle_num_steps = 1;
+post_sep_i = 200e-9;
+post_sep_f = 200e-9;
+post_sep_num_steps = 1;
+post_width_i = 100e-9;
+post_width_f = 100e-9;
+post_width_num_steps = 1;
 
 ################################################################################
 ## prepare sweep vectors
@@ -106,6 +112,8 @@ wg_heights_ = linspace(wg_height_i, wg_height_f, wg_height_num_steps);
 bend_radii_ = linspace(bend_radius_i, bend_radius_f, bend_radius_num_steps);
 etch_depths_ = linspace(etch_depth_i, etch_depth_f, etch_depth_num_steps);
 sidewall_angles_ = linspace(sidewall_angle_i, sidewall_angle_f, sidewall_angle_num_steps);
+post_seps_ = linspace(post_sep_i, post_sep_f, post_sep_num_steps);
+post_widths_ = linspace(post_width_i, post_width_f, post_width_num_steps);
 
 total_num_steps = 1;
 total_num_steps = total_num_steps * length(lambdas_);
@@ -114,6 +122,8 @@ total_num_steps = total_num_steps * length(wg_heights_);
 total_num_steps = total_num_steps * length(bend_radii_);
 total_num_steps = total_num_steps * length(etch_depths_);
 total_num_steps = total_num_steps * length(sidewall_angles_);
+total_num_steps = total_num_steps * length(post_seps_);
+total_num_steps = total_num_steps * length(post_widths_);
 
 lambdas = zeros(total_num_steps);
 wg_widths = zeros(total_num_steps);
@@ -121,6 +131,8 @@ wg_heights = zeros(total_num_steps);
 bend_radii = zeros(total_num_steps);
 etch_depths = zeros(total_num_steps);
 sidewall_angles = zeros(total_num_steps);
+post_seps = zeros(total_num_steps);
+post_widths = zeros(total_num_steps);
 
 ix = 0;
 for (i1 = lambdas_) {
@@ -129,6 +141,8 @@ for (i3 = wg_heights_) {
 for (i4 = bend_radii_) {
 for (i5 = etch_depths_) {
 for (i6 = sidewall_angles_) {
+for (i7 = post_seps_) {
+for (i8 = post_widths_) {
     ix = ix + 1;
     lambdas(ix) = i1;
     wg_widths(ix) = i2;
@@ -136,6 +150,8 @@ for (i6 = sidewall_angles_) {
     bend_radii(ix) = i4;
     etch_depths(ix) = i5;
     sidewall_angles(ix) = i6;
-}}}}}} # remember to add more braces if you add more sweep parameters
+    post_seps(ix) = i7;
+    post_widths(ix) = i8;
+}}}}}}}} # remember to add more braces if you add more sweep parameters
 
 
