@@ -47,18 +47,20 @@ for (ii=1:total_num_steps) {
     inp.etch_depth = etch_depths(ii);
     inp.sidewall_angle = sidewall_angles(ii);
 
+    # update the simulation geometry
     rawlumosweep_update;
 
     # run the simulation
     rawlumosweep_run;
 
 } # loop end
+print("Done!");
 
 ################################################################################
 ## cleanup
 
 # remove dcard
-cleardcard("target_mode_dcard");
+#cleardcard("target_mode_dcard");
 
 ################################################################################
 ## immediate plotting/analysis
