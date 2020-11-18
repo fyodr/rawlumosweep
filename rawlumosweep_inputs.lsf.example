@@ -58,6 +58,8 @@ inp.visually_check = 0;
 
 inp.number_of_test_modes = 5;
 
+inp.double_post = 1;
+
 inp.wg_material = "Si3N4 (Silicon Nitride) - Phillip";
 inp.cladding_material = "SiO2 (Glass) - Palik";
 inp.substrate_material = "SiO2 (Glass) - Palik";
