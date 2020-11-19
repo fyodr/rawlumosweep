@@ -28,11 +28,6 @@ if (outp.num_modes_found == 0) {
         outp.mode_num = jj;
         target_mode = "mode" + num2str(outp.mode_num);
 
-        if (inp.visually_check==1) {
-            E=getresult(target_mode,"E");
-            visualize(E);
-        }
-
         # recover output from simulation
         outp.neff=getdata(target_mode,"neff");
         outp.frequency=getdata(target_mode,"f");
@@ -48,6 +43,13 @@ if (outp.num_modes_found == 0) {
             outp.is_te_mode = 0;
             outp.mode_pol_num = tm_mode_jj;
             tm_mode_jj = tm_mode_jj + 1;
+        }
+
+        if (inp.target_mode_is_te == outp.is_te_mode) {
+            if (inp.target_mode_num == outp.mode_pol_num) {
+                E=getresult(target_mode,"E");
+                visualize(E);
+            }
         }
 
         # compute calculated outputs

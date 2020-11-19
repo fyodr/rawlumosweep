@@ -53,8 +53,9 @@ inp = struct;
 ## 1=yes 0=no
 #Use lumerical multi-coefficient models for material index?
 inp.use_index_fits = 0;
-#Do you want to visually check the modes during the sweep?
-inp.visually_check = 0;
+#Which mode would you like to visually check during the sweep?
+inp.target_mode_is_te = 1;
+inp.target_mode_num = 0;
 
 inp.number_of_test_modes = 5;
 
