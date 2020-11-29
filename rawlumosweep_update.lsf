@@ -10,13 +10,18 @@
 switchtolayout;
 
 select("waveguide");
-set("x min",-0.5*inp.wg_width);
-set("x max", 0.5*inp.wg_width);
-set("y max", inp.wg_height);
+wg_verts = matrix(4,2);
+sidewall_width = inp.wg_height / tan(inp.sidewall_angle * pi/180);
+wg_verts(1,:) = [-0.5*inp.wg_width, inp.wg_height];
+wg_verts(2,:) = [0.5*inp.wg_width, inp.wg_height];
+wg_verts(3,:) = [0.5*(inp.wg_width + sidewall_width), 0];
+wg_verts(4,:) = [-0.5*(inp.wg_width + sidewall_width), 0];
+set("vertices", wg_verts);
 
 select("planarguide");
-if (inp.etch_depth > inp.wg_height) {
+if (inp.etch_depth >= inp.wg_height) {
     set("mesh order", 4);
+    set("y max", 0.001 * inp.wg_height);
 } else {
     set("mesh order", 1);
     set("y max", inp.wg_height - inp.etch_depth);

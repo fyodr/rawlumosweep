@@ -12,7 +12,7 @@ newproject;
 switchtolayout;
 make_structure = 1;
 if (make_structure) {
-    addrect; set("name", "waveguide");
+    addpoly; set("name", "waveguide");
     addrect; set("name", "planarguide");
     addrect; set("name", "cladding");
     addrect; set("name", "substrate");
@@ -32,7 +32,8 @@ if (materialexists(inp.substrate_material) == 0) {
 # set up waveguide
 select("waveguide");
 #set("x min",-0.5*inp.wg_width); set("x max", 0.5*inp.wg_width); # set in loop
-set("y min", 0); #set("y max", inp.wg_height); # set in loop
+#set("y min", 0); #set("y max", inp.wg_height); # set in loop
+set("y", 0);
 set("z min", -inp.sim_width); set("z max",  inp.sim_width);
 set("material", inp.wg_material);
 set("set mesh order from material database", 0);
