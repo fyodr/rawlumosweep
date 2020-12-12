@@ -50,7 +50,7 @@ set("mesh order", 1);
 # set up the cladding
 select("cladding");
 set("x min", -inp.sim_inf); set("x max",  inp.sim_inf);
-set("y min", 0); set("y max", inp.sim_height);
+set("y min", 0); set("y max", inp.sim_inf);
 set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
 set("material", inp.cladding_material);
 set("set mesh order from material database", 0);
@@ -58,7 +58,7 @@ set("mesh order", 2);
 # set up substrate
 select("substrate");
 set("x min", -inp.sim_inf); set("x max",  inp.sim_inf);
-set("y min", -inp.sim_height); set("y max", 0);
+set("y min", -inp.sim_inf); set("y max", 0);
 set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
 set("material", inp.substrate_material);
 set("set mesh order from material database", 0);
@@ -68,12 +68,12 @@ select("FDE");
 set("x",0);
 #set("y",0); # now set in sweep
 set("z",0);
-set("x span", inp.sim_width);
-set("y span", inp.sim_height);
+#set("x span", inp.sim_width);
+#set("y span", inp.sim_height);
 set("define x mesh by", "maximum mesh step");
 set("define y mesh by", "maximum mesh step");
-set("dx", inp.sim_dx);
-set("dy", inp.sim_dy);
+#set("dx", inp.sim_dx);
+#set("dy", inp.sim_dy);
 # set up mesh constraint
 select("mesh");
 set("x",0);

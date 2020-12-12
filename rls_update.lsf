@@ -36,6 +36,10 @@ if (inp.bend_radius == 0) {
 }
 set("wavelength", inp.lambda);
 set("y", 0.5*inp.wg_height);
+set("dx", inp.sim_dx);
+set("dy", inp.sim_dy);
+set("x span", inp.sim_width);
+set("y span", inp.sim_height);
 
 select("mesh");
 set("y", 0.5*inp.wg_height);

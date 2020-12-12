@@ -49,6 +49,11 @@ for (ii=1:total_num_steps) {
     inp.etch_depth = etch_depths(ii);
     inp.sidewall_angle = sidewall_angles(ii);
 
+    inp.sim_dx = sim_dxs(ii);
+    inp.sim_dy = sim_dys(ii);
+    inp.sim_width = sim_widths(ii);
+    inp.sim_height = sim_heights(ii);
+
     # update the simulation geometry
     rls_update;
 

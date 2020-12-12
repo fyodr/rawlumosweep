@@ -57,11 +57,11 @@ inp.wg_material = "Si3N4 (Silicon Nitride) - Phillip";
 inp.cladding_material = "SiO2 (Glass) - Palik";
 inp.substrate_material = "SiO2 (Glass) - Palik";
 
-inp.sim_width = 3e-6;  # 5*wg_width_i; #SI
-inp.sim_height = 2e-6;  # 3*wg_width_i; #SI
-inp.sim_inf = 2e-3;  # 3*wg_width_i; #SI
-inp.sim_dx = 20e-9; #SI
-inp.sim_dy = 20e-9; #SI
+#inp.sim_width = 3e-6;  # 5*wg_width_i; #SI
+#inp.sim_height = 2e-6;  # 3*wg_width_i; #SI
+inp.sim_inf = 1e-3;
+#inp.sim_dx = 20e-9; #SI
+#inp.sim_dy = 20e-9; #SI
 inp.mesh_fine_width = 1.55e-6; #wg_width_f + 6*sim_dx; #SI
 inp.mesh_fine_height = 0.3e-6; # wg_height + 6*sim_dy; #SI
 inp.mesh_fine_dx = 10e-9; #SI
@@ -88,6 +88,24 @@ etch_depth_num_steps = 1;
 sidewall_angle_i = 90;
 sidewall_angle_f = 90;
 sidewall_angle_num_steps = 1;
+post_sep_i = 150e-9;
+post_sep_f = 150e-9;
+post_sep_num_steps = 1;
+post_width_i = 150e-9;
+post_width_f = 150e-9;
+post_width_num_steps = 1;
+sim_dx_i = 40e-9;
+sim_dx_f = 10e-9;
+sim_dx_num_steps = 4;
+sim_dy_i = 40e-9;
+sim_dy_f = 10e-9;
+sim_dy_num_steps = 4;
+sim_width_i = 6e-6;
+sim_width_f = 6e-6;
+sim_width_num_steps = 1;
+sim_height_i = 4e-6;
+sim_height_f = 4e-6;
+sim_height_num_steps = 1;
 
 ################################################################################
 ## prepare sweep vectors
@@ -98,6 +116,12 @@ wg_heights_ = linspace(wg_height_i, wg_height_f, wg_height_num_steps);
 bend_radii_ = linspace(bend_radius_i, bend_radius_f, bend_radius_num_steps);
 etch_depths_ = linspace(etch_depth_i, etch_depth_f, etch_depth_num_steps);
 sidewall_angles_ = linspace(sidewall_angle_i, sidewall_angle_f, sidewall_angle_num_steps);
+post_seps_ = linspace(post_sep_i, post_sep_f, post_sep_num_steps);
+post_widths_ = linspace(post_width_i, post_width_f, post_width_num_steps);
+sim_dxs_ = linspace(sim_dx_i, sim_dx_f, sim_dx_num_steps);
+sim_dys_ = linspace(sim_dy_i, sim_dy_f, sim_dy_num_steps);
+sim_widths_ = linspace(sim_width_i, sim_width_f, sim_width_num_steps);
+sim_heights_ = linspace(sim_height_i, sim_height_f, sim_height_num_steps);
 
 total_num_steps = 1;
 total_num_steps = total_num_steps * length(lambdas_);
@@ -106,6 +130,12 @@ total_num_steps = total_num_steps * length(wg_heights_);
 total_num_steps = total_num_steps * length(bend_radii_);
 total_num_steps = total_num_steps * length(etch_depths_);
 total_num_steps = total_num_steps * length(sidewall_angles_);
+total_num_steps = total_num_steps * length(post_seps_);
+total_num_steps = total_num_steps * length(post_widths_);
+total_num_steps = total_num_steps * length(sim_dxs_);
+total_num_steps = total_num_steps * length(sim_dys_);
+total_num_steps = total_num_steps * length(sim_widths_);
+total_num_steps = total_num_steps * length(sim_heights_);
 
 lambdas = zeros(total_num_steps);
 wg_widths = zeros(total_num_steps);
@@ -113,6 +143,13 @@ wg_heights = zeros(total_num_steps);
 bend_radii = zeros(total_num_steps);
 etch_depths = zeros(total_num_steps);
 sidewall_angles = zeros(total_num_steps);
+post_seps = zeros(total_num_steps);
+post_widths = zeros(total_num_steps);
+
+sim_dxs = zeros(total_num_steps);
+sim_dys = zeros(total_num_steps);
+sim_widths = zeros(total_num_steps);
+sim_heights = zeros(total_num_steps);
 
 ix = 0;
 for (i1 = lambdas_) {
@@ -121,6 +158,12 @@ for (i3 = wg_heights_) {
 for (i4 = bend_radii_) {
 for (i5 = etch_depths_) {
 for (i6 = sidewall_angles_) {
+for (i7 = post_seps_) {
+for (i8 = post_widths_) {
+for (i9 = sim_dxs_) {
+for (i10 = sim_dys_) {
+for (i11 = sim_widths_) {
+for (i12 = sim_heights_) {
     ix = ix + 1;
     lambdas(ix) = i1;
     wg_widths(ix) = i2;
@@ -128,6 +171,12 @@ for (i6 = sidewall_angles_) {
     bend_radii(ix) = i4;
     etch_depths(ix) = i5;
     sidewall_angles(ix) = i6;
-}}}}}} # remember to add more braces if you add more sweep parameters
+    post_seps(ix) = i7;
+    post_widths(ix) = i8;
+    sim_dxs(ix) = i9;
+    sim_dys(ix) = i10;
+    sim_widths(ix) = i11;
+    sim_heights(ix) = i12;
+}}}}}}}}}}}} # remember to add more braces if you add more sweep parameters
 
 
