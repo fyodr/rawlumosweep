@@ -16,13 +16,13 @@
 
 clear;
 # define inputs
-rawlumosweep_inputs;
+rls_inputs;
 # define the get_material_from_file function
 material_from_file;
 # set up model geometry
-rawlumosweep_setup;
+rls_setup;
 # define output_header and the write_output function
-rawlumosweep_output;
+rls_output;
 
 ################################################################################
 ## sweep preparation
@@ -33,6 +33,8 @@ mode_found = 0;
 write(output_filename, output_header); 
 # output_filename is defined in rawlumosweep_inputs.lsf
 # output_header   is defined in rawlumosweep_output.lsf
+
+print(num2str(length(lambdas)));
 
 ################################################################################
 ## sweep proper
@@ -48,10 +50,10 @@ for (ii=1:total_num_steps) {
     inp.sidewall_angle = sidewall_angles(ii);
 
     # update the simulation geometry
-    rawlumosweep_update;
+    rls_update;
 
     # run the simulation
-    rawlumosweep_run;
+    rls_run;
 
 } # loop end
 print("Done!");

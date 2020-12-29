@@ -14,14 +14,8 @@
 #   * inp.use_index_fits
 #   * inp.number_of_test_modes
 #   * inp.wg_material
-#   * inp.cladding_material
-#   * inp.substrate_material
 #   * inp.sim_width
 #   * inp.sim_height
-#   * inp.substrate_width  (effectively infinite)
-#   * inp.substrate_height (effectively infinite)
-#   * inp.cladding_width   (effectively infinite)
-#   * inp.cladding_height  (effectively infinite)
 #   * inp.sim_dx
 #   * inp.sim_dy
 #   * inp.mesh_fine_width  (should fit largest waveguide structure)
@@ -65,10 +59,7 @@ inp.substrate_material = "SiO2 (Glass) - Palik";
 
 inp.sim_width = 3e-6;  # 5*wg_width_i; #SI
 inp.sim_height = 2e-6;  # 3*wg_width_i; #SI
-inp.substrate_width = inp.sim_width*1.5; #SI (infinite, not recorded)
-inp.substrate_height = inp.sim_height*1.5; #SI (infinite, not recorded)
-inp.cladding_width = inp.sim_width*1.5; #SI (infinite, not recorded)
-inp.cladding_height = inp.sim_height*1.5; #SI (infinite, not recorded)
+inp.sim_inf = 2e-3;  # 3*wg_width_i; #SI
 inp.sim_dx = 20e-9; #SI
 inp.sim_dy = 20e-9; #SI
 inp.mesh_fine_width = 1.55e-6; #wg_width_f + 6*sim_dx; #SI

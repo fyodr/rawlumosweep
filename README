@@ -14,10 +14,7 @@ The scripts should run smoothly on any up-to-date installation of Lumerical
 MODE Solutions.
 
 Known issues/TODO: 
-1. in output, the column "loss(dB/cm)" is labeled wrong - it is really dB/m, but 
-   the column in the GUI converts the data for display
-2. all the filenames will eventually be shortened to rls_XXX.lsf
-3. better README: for now, probably best to read through:
+1. better README: for now, probably best to read through:
       - rawlumosweep.lsf (short!)
       - the example input file (longer, focus on "Sweepable Parameters")
-4. other stuff, less urgent
+2. other stuff, less urgent

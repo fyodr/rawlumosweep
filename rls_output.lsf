@@ -24,7 +24,7 @@ output_header = output_header + "sim_height,sim_width,sim_dy,sim_dx,";
 output_header = output_header + "mesh_fine_width,mesh_fine_height,";
 output_header = output_header + "mesh_fine_dy,mesh_fine_dx,";
 output_header = output_header + "mode_num,num_modes_found,frequency,";
-output_header = output_header + "neff_lin_real,neff_lin_imag,loss(dB/cm),";
+output_header = output_header + "neff_lin_real,neff_lin_imag,loss(dB/m),";
 output_header = output_header + "neff_ang_real,neff_ang_imag,";
 output_header = output_header + "ng_lin_real,ng_lin_imag,";
 output_header = output_header + "te_pol_frac,is_te_mode,mode_pol_num,";
@@ -64,7 +64,7 @@ function write_output(output_fn,output_header,inp, outp) {
 
     outtext = replacestring(outtext,"mode_num",num2str(outp.mode_num));
     outtext = replacestring(outtext,"frequency",num2str(outp.frequency));
-    outtext = replacestring(outtext,"loss(dB/cm)",num2str(outp.loss));
+    outtext = replacestring(outtext,"loss(dB/m)",num2str(outp.loss));
 
     outtext = replacestring(outtext,"neff_lin_real",num2str(real(outp.neff)));
     outtext = replacestring(outtext,"neff_lin_imag",num2str(imag(outp.neff)));

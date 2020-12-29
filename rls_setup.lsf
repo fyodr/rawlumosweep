@@ -34,32 +34,32 @@ select("waveguide");
 #set("x min",-0.5*inp.wg_width); set("x max", 0.5*inp.wg_width); # set in loop
 #set("y min", 0); #set("y max", inp.wg_height); # set in loop
 set("y", 0);
-set("z min", -inp.sim_width); set("z max",  inp.sim_width);
+set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
 set("material", inp.wg_material);
 set("set mesh order from material database", 0);
 set("mesh order", 1);
 # set up planarguide
 select("planarguide");
-set("x min",-inp.sim_width); set("x max", inp.sim_width);
+set("x min",-inp.sim_inf); set("x max", inp.sim_inf);
 set("y min", 0); #set("y max", inp.wg_height - inp.etch_depth); # set in loop
-set("z min", -inp.sim_width); set("z max",  inp.sim_width);
+set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
 set("material", inp.wg_material);
 set("set mesh order from material database", 0);
 set("mesh order", 1);
 
 # set up the cladding
 select("cladding");
-set("x min", -inp.sim_width); set("x max",  inp.sim_width);
+set("x min", -inp.sim_inf); set("x max",  inp.sim_inf);
 set("y min", 0); set("y max", inp.sim_height);
-set("z min", -inp.sim_width); set("z max",  inp.sim_width);
+set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
 set("material", inp.cladding_material);
 set("set mesh order from material database", 0);
 set("mesh order", 2);
 # set up substrate
 select("substrate");
-set("x min", -inp.sim_width); set("x max",  inp.sim_width);
+set("x min", -inp.sim_inf); set("x max",  inp.sim_inf);
 set("y min", -inp.sim_height); set("y max", 0);
-set("z min", -inp.sim_width); set("z max",  inp.sim_width);
+set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
 set("material", inp.substrate_material);
 set("set mesh order from material database", 0);
 set("mesh order", 2);
@@ -81,7 +81,7 @@ set("x",0);
 set("z",0); 
 set("x span", inp.mesh_fine_width);
 set("y span", inp.mesh_fine_height);
-set("z span", inp.sim_width);
+set("z span", inp.sim_inf);
 set("dx", inp.mesh_fine_dx);
 set("dy", inp.mesh_fine_dy);
 # set up FDE simulation details
