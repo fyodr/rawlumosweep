@@ -1,0 +1,60 @@
+################################################################################
+# rawlumosweep_update.lsf
+# by Ted Morin
+#
+# update geometry for rawlumosweep
+#
+# (please keep in mind that all scripts share a namespace in lumerical)
+################################################################################
+
+switchtolayout;
+
+radius_diff = inp.bend_radius2 - inp.bend_radius1;
+
+inp.wg_gap = radius_diff - 0.5*(inp.wg_width1 + inp.wg_width2);
+inp.bend_radius = inp.bend_radius1 + 0.5*radius_diff;
+
+select("waveguide1");
+wg_verts1 = matrix(4,2);
+sidewall_width = inp.wg_height / tan(inp.sidewall_angle * pi/180);
+wg_verts1(1,:) = [-0.5*inp.wg_width - 0.5*radius_diff, inp.wg_height];
+wg_verts1(2,:) = [0.5*inp.wg_width - 0.5*radius_diff, inp.wg_height];
+wg_verts1(3,:) = [0.5*(inp.wg_width + sidewall_width) - 0.5*radius_diff, 0];
+wg_verts1(4,:) = [-0.5*(inp.wg_width + sidewall_width) - 0.5*radius_diff, 0];
+set("vertices", wg_verts1);
+
+select("waveguide2");
+wg_verts2 = matrix(4,2);
+sidewall_width = inp.wg_height / tan(inp.sidewall_angle * pi/180);
+wg_verts2(1,:) = [-0.5*inp.wg_width + 0.5*radius_diff, inp.wg_height];
+wg_verts2(2,:) = [0.5*inp.wg_width + 0.5*radius_diff, inp.wg_height];
+wg_verts2(3,:) = [0.5*(inp.wg_width + sidewall_width) + 0.5*radius_diff, 0];
+wg_verts2(4,:) = [-0.5*(inp.wg_width + sidewall_width) + 0.5*radius_diff, 0];
+set("vertices", wg_verts2);
+
+select("planarguide");
+if (inp.etch_depth >= inp.wg_height) {
+    set("mesh order", 4);
+    set("y max", 0.001 * inp.wg_height);
+} else {
+    set("mesh order", 1);
+    set("y max", inp.wg_height - inp.etch_depth);
+}
+
+select("FDE");
+if (inp.bend_radius == 0) {
+    set("bent waveguide", 0);
+} else {
+    set("bent waveguide", 1);
+    set("bend radius", inp.bend_radius);
+}
+set("wavelength", inp.lambda);
+set("y", 0.5*inp.wg_height);
+
+select("mesh1");
+set("y", 0.5*inp.wg_height);
+set("x", -0.5*radius_diff);
+select("mesh2");
+set("y", 0.5*inp.wg_height);
+set("x", 0.5*radius_diff);
+

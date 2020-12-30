@@ -1,0 +1,119 @@
+################################################################################
+# rawlumosweep_output.lsf
+# by Ted Morin
+#
+# set up geometry for rawlumosweep
+#
+# (please keep in mind that all scripts share a namespace in lumerical)
+################################################################################
+
+newproject;
+
+switchtolayout;
+make_structure = 1;
+if (make_structure) {
+    addpoly; set("name", "waveguide1");
+    addpoly; set("name", "waveguide2");
+    addrect; set("name", "planarguide");
+    addrect; set("name", "cladding");
+    addrect; set("name", "substrate");
+    addfde;
+    addmesh; set("name", "mesh1");
+    addmesh; set("name", "mesh2");
+}
+if (materialexists(inp.wg_material) == 0) {
+    get_material_from_file(inp.wg_material, 2);
+}
+if (materialexists(inp.cladding_material) == 0) {
+    get_material_from_file(inp.cladding_material, 2);
+}
+if (materialexists(inp.substrate_material) == 0) {
+    get_material_from_file(inp.substrate_material, 2);
+}
+
+# set up waveguides
+select("waveguide1");
+#set("x min",-0.5*inp.wg_width); set("x max", 0.5*inp.wg_width); # set in loop
+#set("y min", 0); #set("y max", inp.wg_height); # set in loop
+set("y", 0);
+set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
+set("material", inp.wg_material);
+set("set mesh order from material database", 0);
+set("mesh order", 1);
+select("waveguide2");
+#set("x min",-0.5*inp.wg_width); set("x max", 0.5*inp.wg_width); # set in loop
+#set("y min", 0); #set("y max", inp.wg_height); # set in loop
+set("y", 0);
+set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
+set("material", inp.wg_material);
+set("set mesh order from material database", 0);
+set("mesh order", 1);
+# set up planarguide
+select("planarguide");
+set("x min",-inp.sim_inf); set("x max", inp.sim_inf);
+set("y min", 0); #set("y max", inp.wg_height - inp.etch_depth); # set in loop
+set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
+set("material", inp.wg_material);
+set("set mesh order from material database", 0);
+set("mesh order", 1);
+
+# set up the cladding
+select("cladding");
+set("x min", -inp.sim_inf); set("x max",  inp.sim_inf);
+set("y min", 0); set("y max", inp.sim_height);
+set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
+set("material", inp.cladding_material);
+set("set mesh order from material database", 0);
+set("mesh order", 2);
+# set up substrate
+select("substrate");
+set("x min", -inp.sim_inf); set("x max",  inp.sim_inf);
+set("y min", -inp.sim_height); set("y max", 0);
+set("z min", -inp.sim_inf); set("z max",  inp.sim_inf);
+set("material", inp.substrate_material);
+set("set mesh order from material database", 0);
+set("mesh order", 2);
+# set up FDE simulation geometry (non-geometry below)
+select("FDE");
+set("x",0);
+#set("y",0); # now set in sweep
+set("z",0);
+set("x span", inp.sim_width);
+set("y span", inp.sim_height);
+set("define x mesh by", "maximum mesh step");
+set("define y mesh by", "maximum mesh step");
+set("dx", inp.sim_dx);
+set("dy", inp.sim_dy);
+# set up mesh constraint
+select("mesh1");
+#set("x",0); # now set in sweep
+#set("y", 0.5*inp.wg_height); # now set in sweep
+set("z",0); 
+set("x span", inp.mesh_fine_width);
+set("y span", inp.mesh_fine_height);
+set("z span", inp.sim_inf);
+set("dx", inp.mesh_fine_dx);
+set("dy", inp.mesh_fine_dy);
+select("mesh2");
+#set("x",0); # now set in sweep
+#set("y", 0.5*inp.wg_height); # now set in sweep
+set("z",0); 
+set("x span", inp.mesh_fine_width);
+set("y span", inp.mesh_fine_height);
+set("z span", inp.sim_inf);
+set("dx", inp.mesh_fine_dx);
+set("dy", inp.mesh_fine_dy);
+# set up FDE simulation details
+select("FDE");
+#set("wavelength", inp.lambda); # set in loop
+set("solver type", "2D Z normal");
+set("x min bc", "pml");
+set("x max bc", "pml");
+set("y min bc", "pml");
+set("y max bc", "pml");
+set("bent waveguide", 1);
+set("bend location", "simulation center");
+#set("bend radius", inp.bend_radius_i); # set in loop
+set("calculate group index", 1);
+set("fit materials with multi-coefficient model", inp.use_index_fits);
+set("number of test modes", inp.number_of_test_modes);

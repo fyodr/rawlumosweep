@@ -61,7 +61,7 @@ if (outp.num_modes_found == 0) {
         outp.n_substrate=getindex(inp.substrate_material, outp.frequency);
 
         # write a good summary of the output
-        write_output(output_filename1,output_header,inp,outp);
+        write_output_2ble(output_filename2,output_header2,inp,outp);
     }
 }
 

@@ -19,8 +19,6 @@ clear;
 rls_inputs;
 # define the get_material_from_file function
 material_from_file;
-# set up model geometry
-rls_setup;
 # define output_header and the write_output function
 rls_output;
 
@@ -43,17 +41,38 @@ for (ii=1:total_num_steps) {
 
     # set the variables for this iteration
     inp.lambda = lambdas(ii);
-    inp.wg_width = wg_widths(ii);
-    inp.bend_radius = bend_radii(ii);
+    inp.wg_width1 = wg_widths1(ii);
+    inp.wg_width2 = wg_widths2(ii);
+    inp.bend_radius1 = bend_radii1(ii);
+    inp.bend_radius2 = bend_radii2(ii);
     inp.wg_height = wg_heights(ii);
     inp.etch_depth = etch_depths(ii);
     inp.sidewall_angle = sidewall_angles(ii);
 
-    # update the simulation geometry
-    rls_update;
+    min_bend_radius2 = inp.bend_radius1 + 0.5*(inp.wg_width1 + inp.wg_width2)
+    if ( min_bend_radius2 >= inp.bend_radius2) {
+        print("negative gap! skipping " + num2str(ii));
+    } else {
+        # run 1gle waveguides
+        rls_setup;
 
-    # run the simulation
-    rls_run;
+        inp.bend_radius = inp.bend_radius1;
+        inp.wg_width = inp.wg_width1;
+        rls_update;
+        rls_run;
+        outp1 = outp;
+
+        inp.bend_radius = inp.bend_radius2;
+        inp.wg_width = inp.wg_width2;
+        rls_update;
+        rls_run;
+        outp2 = outp;
+
+        # run 2ble waveguides
+        rls_setup_2ble;
+        rls_update_2ble;
+        rls_run_2ble;
+    }
 
 } # loop end
 print("Done!");
