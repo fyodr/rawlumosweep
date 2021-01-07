@@ -28,11 +28,18 @@ rls_output;
 mode_found = 0;
 
 # write a header to the output file
-write(output_filename, output_header); 
+write(output_filename1, output_header); 
+write(output_filename2, output_header2); 
 # output_filename is defined in rawlumosweep_inputs.lsf
 # output_header   is defined in rawlumosweep_output.lsf
 
-print(num2str(length(lambdas)));
+if (total_num_steps != length(lambdas)) {
+    print("length of lambdas differs from expected steps!");
+    print("expected steps  = " + num2str(total_num_steps));
+    total_num_steps = length(lambdas);
+    print("length(lambdas) = " + num2str(total_num_steps));
+}
+print(num2str(total_num_steps));
 
 ################################################################################
 ## sweep proper
@@ -49,10 +56,8 @@ for (ii=1:total_num_steps) {
     inp.etch_depth = etch_depths(ii);
     inp.sidewall_angle = sidewall_angles(ii);
 
-    min_bend_radius2 = inp.bend_radius1 + 0.5*(inp.wg_width1 + inp.wg_width2)
-    if ( min_bend_radius2 >= inp.bend_radius2) {
-        print("negative gap! skipping " + num2str(ii));
-    } else {
+    min_bend_radius2 = inp.bend_radius1 + 0.5*(inp.wg_width1 + inp.wg_width2);
+    if ( min_bend_radius2 < (inp.bend_radius2) ) {
         # run 1gle waveguides
         rls_setup;
 
@@ -72,6 +77,8 @@ for (ii=1:total_num_steps) {
         rls_setup_2ble;
         rls_update_2ble;
         rls_run_2ble;
+    } else {
+        print(strcat("negative gap! skipping " , num2str(ii)));
     }
 
 } # loop end
